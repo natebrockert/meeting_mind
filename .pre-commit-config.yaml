@@ -1,0 +1,18 @@
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.14.6
+    hooks:
+      - id: ruff-check
+        args: ["--fix"]
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.28.0
+    hooks:
+      - id: gitleaks
+  - repo: local
+    hooks:
+      - id: pii-check
+        name: pii-check
+        description: Block real-meeting and owner-identifying terms in file content.
+        entry: python3 scripts/check_pii.py
+        language: system
+        pass_filenames: true

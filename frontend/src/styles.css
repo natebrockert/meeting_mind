@@ -1,0 +1,6299 @@
+/* ──────────────────────────────────────────────────────────────────────────
+ * MeetingMind · Observatory design system
+ * Nocturnal-by-default. Chartreuse on midnight. Three modes via data-mm-mode.
+ * Tokens are authoritative — components read CSS vars, never hex codes.
+ * ───────────────────────────────────────────────────────────────────────── */
+
+:root {
+  --mm-font-display: "DM Serif Display", "Cormorant Garamond", Georgia, serif;
+  --mm-font-body: "Geist", "Geist Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --mm-font-mono: "Geist Mono", "JetBrains Mono", ui-monospace, monospace;
+
+  --mm-text-meta: 10px;
+  --mm-text-xs: 11px;
+  --mm-text-sm: 13px;
+  --mm-text-base: 14px;
+  --mm-text-lg: 17px;
+  --mm-text-xl: 22px;
+  --mm-text-2xl: 32px;
+  --mm-text-3xl: 48px;
+  --mm-text-4xl: 64px;
+
+  --mm-tracking-tight: -0.02em;
+  --mm-tracking-snug: -0.01em;
+  --mm-tracking-normal: 0;
+  --mm-tracking-wide: 0.06em;
+  --mm-tracking-label: 0.16em;
+  --mm-tracking-loud: 0.22em;
+
+  --mm-sp-1: 4px;
+  --mm-sp-2: 8px;
+  --mm-sp-3: 12px;
+  --mm-sp-4: 16px;
+  --mm-sp-5: 22px;
+  --mm-sp-6: 28px;
+  --mm-sp-7: 36px;
+  --mm-sp-8: 48px;
+  --mm-sp-9: 64px;
+
+  --mm-radius-sm: 6px;
+  --mm-radius: 10px;
+  --mm-radius-lg: 18px;
+  --mm-radius-pill: 999px;
+
+  --mm-leading-tight: 0.95;
+  --mm-leading-snug: 1.2;
+  --mm-leading-body: 1.55;
+
+  --mm-ease-out: cubic-bezier(0.2, 0.7, 0.3, 1);
+  --mm-dur-fast: 120ms;
+  --mm-dur-base: 180ms;
+  --mm-dur-slow: 320ms;
+}
+
+:root,
+[data-mm-mode="night"] {
+  --mm-bone: #0b1020;
+  --mm-bone-2: #131a2e;
+  --mm-bone-3: #1c2440;
+
+  --mm-ink: #eef2ff;
+  --mm-ink-2: #c8d0eb;
+  --mm-ink-3: #8089b3;
+  --mm-ink-4: #4f567a;
+
+  --mm-rule: #2a3258;
+  --mm-rule-soft: #1a2040;
+
+  --mm-clay: #c8ff5b;
+  --mm-clay-2: #a8e036;
+  --mm-clay-soft: #3a5a18;
+
+  --mm-sage: #b08cff;
+  --mm-sage-2: #8c66e8;
+  --mm-sage-soft: #3a2870;
+
+  --mm-sun: #f8d56b;
+  --mm-sky: #5cc2ff;
+  --mm-rust: #ff7a59;
+  --mm-berry: #ff7ab8;
+
+  --mm-spk-1-fg: #c8ff5b;
+  --mm-spk-1-bg: #2a3a14;
+  --mm-spk-2-fg: #b08cff;
+  --mm-spk-2-bg: #2c2148;
+  --mm-spk-3-fg: #f8d56b;
+  --mm-spk-3-bg: #3a2e10;
+  --mm-spk-4-fg: #ff7ab8;
+  --mm-spk-4-bg: #3d1a2a;
+  --mm-spk-5-fg: #5cc2ff;
+  --mm-spk-5-bg: #14304a;
+  --mm-spk-6-fg: #6dd5a8;
+  --mm-spk-6-bg: #143a2c;
+
+  --mm-glow-clay: 0 0 28px rgba(200, 255, 91, 0.32);
+  --mm-glow-clay-2: 0 0 36px rgba(200, 255, 91, 0.5);
+  --mm-glow-live: 0 0 8px rgba(200, 255, 91, 0.6), 0 0 16px rgba(200, 255, 91, 0.35);
+  --mm-shadow-card: 0 12px 40px rgba(0, 0, 0, 0.25);
+  --mm-shadow-modal: 0 24px 60px rgba(0, 0, 0, 0.55);
+}
+
+[data-mm-mode="day"] {
+  --mm-bone: #eef1fa;
+  --mm-bone-2: #e2e7f4;
+  --mm-bone-3: #d2d9ec;
+
+  --mm-ink: #0b1020;
+  --mm-ink-2: #2e3658;
+  --mm-ink-3: #6a719c;
+  --mm-ink-4: #9aa1c4;
+
+  --mm-rule: #c5cde3;
+  --mm-rule-soft: #d8dded;
+
+  --mm-clay: #5c8a14;
+  --mm-clay-2: #3f6308;
+  --mm-clay-soft: #dbe9b6;
+
+  --mm-sage: #5a3fc6;
+  --mm-sage-2: #3c24a8;
+  --mm-sage-soft: #d4c8f0;
+
+  --mm-sun: #b88a14;
+  --mm-sky: #0a72bd;
+  --mm-berry: #c43977;
+  --mm-rust: #c75a3a;
+
+  --mm-spk-1-fg: #3f6308;
+  --mm-spk-1-bg: #dbe9b6;
+  --mm-spk-2-fg: #3c24a8;
+  --mm-spk-2-bg: #d4c8f0;
+  --mm-spk-3-fg: #b88a14;
+  --mm-spk-3-bg: #f4e5b9;
+  --mm-spk-4-fg: #c43977;
+  --mm-spk-4-bg: #f0c8d9;
+  --mm-spk-5-fg: #0a72bd;
+  --mm-spk-5-bg: #c5deef;
+  --mm-spk-6-fg: #19604a;
+  --mm-spk-6-bg: #cce6dc;
+
+  --mm-glow-clay: none;
+  --mm-glow-clay-2: none;
+  --mm-glow-live: 0 0 0 2px rgba(92, 138, 20, 0.18);
+  --mm-shadow-card: 0 4px 16px rgba(11, 16, 32, 0.06);
+  --mm-shadow-modal: 0 24px 60px rgba(11, 16, 32, 0.22);
+}
+
+[data-mm-mode="pdf"] {
+  --mm-bone: #ffffff;
+  --mm-bone-2: #f5f7fc;
+  --mm-bone-3: #e6eaf3;
+  --mm-ink: #0b1020;
+  --mm-ink-2: #2e3658;
+  --mm-ink-3: #6a719c;
+  --mm-ink-4: #9aa1c4;
+  --mm-rule: #c5cde3;
+  --mm-rule-soft: #dbe1ee;
+  --mm-clay: #3f6308;
+  --mm-clay-2: #2d4806;
+  --mm-glow-clay: none;
+  --mm-glow-live: none;
+}
+
+/* ── Reset + global frame ─────────────────────────────────────────────────── */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  background: var(--mm-bone);
+  min-height: 100vh;
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--mm-font-body);
+  color: var(--mm-ink);
+  font-size: var(--mm-text-base);
+  line-height: var(--mm-leading-body);
+}
+
+/* Global keyboard-focus indicator. Previously several .mm-* rules set
+ * `outline: none` and forgot to provide a :focus-visible alternative,
+ * leaving keyboard users with no focus signal. This rule applies the
+ * chartreuse outline ring everywhere a focusable element is reached
+ * via keyboard (mouse focus stays clean). */
+:focus-visible {
+  outline: 2px solid var(--mm-clay);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Floating upgrade-available pill — sits top-right of the canvas
+ * without blocking content. Click → opens UpgradeModal. */
+.mm-upgrade-pill {
+  position: fixed;
+  top: 18px;
+  right: 24px;
+  z-index: 30;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px 8px 12px;
+  border: 1px solid var(--mm-rule);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--mm-clay) 8%, var(--mm-bone));
+  color: var(--mm-ink);
+  font-family: var(--mm-font-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  box-shadow: var(--mm-shadow-card);
+  transition:
+    background 200ms ease,
+    transform 200ms ease;
+}
+
+.mm-upgrade-pill:hover {
+  background: color-mix(in srgb, var(--mm-clay) 16%, var(--mm-bone));
+  transform: translateY(-1px);
+}
+
+.mm-upgrade-pill-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--mm-clay);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--mm-clay) 25%, transparent);
+}
+
+.mm-upgrade-pill-arrow {
+  font-size: 13px;
+  color: var(--mm-ink-3);
+}
+
+[data-mm-mode="night"] .mm-upgrade-pill {
+  background: rgba(11, 16, 32, 0.92);
+}
+
+.mm-modal-upgrade {
+  max-width: 580px;
+}
+
+.mm-upgrade-notes {
+  max-height: 280px;
+  overflow-y: auto;
+  margin: 0;
+  padding: 12px 14px;
+  background: var(--mm-bone-2);
+  border: 1px solid var(--mm-rule);
+  border-radius: 6px;
+  font-family: var(--mm-font-mono);
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--mm-ink);
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/* Inbox setup checklist — appears only when prereqs are missing.
+ * Friendlier than the terminal-only doctor output for first-time
+ * testers who land on the dashboard before everything's configured. */
+.mm-setup-checklist {
+  margin-top: 14px;
+  padding: 14px 18px;
+  background: color-mix(in srgb, var(--mm-clay) 5%, var(--mm-bone-2));
+  border: 1px solid var(--mm-rule);
+  border-left: 3px solid var(--mm-clay);
+  border-radius: 8px;
+  max-width: 720px;
+}
+
+.mm-setup-checklist ul {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+}
+
+.mm-setup-checklist li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+  font-size: 13px;
+}
+
+.mm-setup-checklist li.is-ok {
+  color: var(--mm-ink-3);
+}
+
+.mm-setup-checklist li.is-pending strong {
+  color: var(--mm-ink);
+}
+
+.mm-setup-checklist .mm-setup-mark {
+  width: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: var(--mm-clay-2);
+}
+
+.mm-setup-checklist li.is-ok .mm-setup-mark {
+  color: var(--mm-sage);
+}
+
+[data-mm-mode="night"] .mm-setup-checklist .mm-setup-mark {
+  color: var(--mm-clay);
+}
+
+/* The mobile-only palette launcher is hidden on desktop; the @media
+ * block at ≤768px overrides this to position + display the button. */
+.mm-mobile-palette-fab {
+  display: none;
+}
+
+[data-mm-mode="night"] body {
+  background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 600' width='600' height='600'%3E%3Ccircle cx='5' cy='12' r='0.7' fill='%23eef2ff' opacity='0.35'/%3E%3Ccircle cx='73' cy='61' r='0.6' fill='%23eef2ff' opacity='0.3'/%3E%3Ccircle cx='150' cy='220' r='0.7' fill='%23eef2ff' opacity='0.45'/%3E%3Ccircle cx='225' cy='90' r='1.4' fill='%23eef2ff' opacity='0.5'/%3E%3Ccircle cx='312' cy='330' r='0.6' fill='%23eef2ff' opacity='0.32'/%3E%3Ccircle cx='420' cy='180' r='0.6' fill='%23eef2ff' opacity='0.42'/%3E%3Ccircle cx='498' cy='402' r='1.3' fill='%23eef2ff' opacity='0.4'/%3E%3Ccircle cx='560' cy='90' r='0.6' fill='%23eef2ff' opacity='0.3'/%3E%3Ccircle cx='50' cy='488' r='0.7' fill='%23eef2ff' opacity='0.42'/%3E%3Ccircle cx='180' cy='540' r='0.6' fill='%23eef2ff' opacity='0.28'/%3E%3Ccircle cx='270' cy='480' r='0.7' fill='%23eef2ff' opacity='0.5'/%3E%3Ccircle cx='380' cy='540' r='0.6' fill='%23eef2ff' opacity='0.34'/%3E%3Ccircle cx='540' cy='560' r='0.7' fill='%23eef2ff' opacity='0.46'/%3E%3Ccircle cx='110' cy='300' r='0.6' fill='%23eef2ff' opacity='0.3'/%3E%3Ccircle cx='335' cy='40' r='0.6' fill='%23eef2ff' opacity='0.4'/%3E%3C/svg%3E");
+  background-size: 600px 600px;
+  background-attachment: fixed;
+}
+
+::selection {
+  background: var(--mm-sage-soft);
+  color: var(--mm-ink);
+}
+
+/* ── Type primitives ──────────────────────────────────────────────────────── */
+
+.mm-display {
+  font-family: var(--mm-font-display);
+  font-weight: 400;
+  letter-spacing: var(--mm-tracking-tight);
+  line-height: var(--mm-leading-tight);
+}
+
+.mm-ital {
+  font-style: italic;
+  font-family: var(--mm-font-display);
+  color: var(--mm-clay);
+}
+
+[data-mm-mode="night"] .mm-ital {
+  text-shadow: 0 0 16px rgba(200, 255, 91, 0.18);
+}
+
+.mm-mono {
+  font-family: var(--mm-font-mono);
+  font-feature-settings: "zero", "ss05";
+}
+
+.mm-lbl {
+  font-family: var(--mm-font-mono);
+  font-size: var(--mm-text-meta);
+  letter-spacing: var(--mm-tracking-label);
+  text-transform: uppercase;
+  color: var(--mm-ink-3);
+  font-weight: 500;
+}
+
+.mm-lbl-strong {
+  font-family: var(--mm-font-mono);
+  font-size: var(--mm-text-xs);
+  letter-spacing: var(--mm-tracking-loud);
+  text-transform: uppercase;
+  color: var(--mm-ink);
+  font-weight: 500;
+}
+
+.mm-body-serif {
+  font-family: var(--mm-font-display);
+  font-weight: 400;
+  font-size: var(--mm-text-lg);
+  line-height: 1.55;
+  letter-spacing: -0.005em;
+}
+
+/* ── Hairlines & rules ────────────────────────────────────────────────────── */
+
+.mm-rule {
+  height: 1px;
+  background: var(--mm-rule);
+  border: 0;
+  margin: 0;
+}
+
+[data-mm-mode="night"] .mm-rule {
+  background: linear-gradient(90deg, transparent, var(--mm-rule), transparent);
+}
+
+.mm-section-rule {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin: 26px 0 14px;
+}
+
+.mm-section-rule::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--mm-rule);
+}
+
+/* ── Buttons ──────────────────────────────────────────────────────────────── */
+
+.mm-btn,
+button.mm-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mm-font-body);
+  font-size: var(--mm-text-sm);
+  font-weight: 500;
+  background: var(--mm-bone);
+  color: var(--mm-ink);
+  border: 1px solid var(--mm-rule);
+  padding: 9px 16px;
+  cursor: pointer;
+  border-radius: var(--mm-radius-pill);
+  transition: all var(--mm-dur-base) var(--mm-ease-out);
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.mm-btn:hover:not(:disabled) {
+  border-color: var(--mm-ink);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+}
+
+.mm-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.mm-btn-primary {
+  background: var(--mm-sage-2);
+  color: var(--mm-bone);
+  border-color: var(--mm-sage-2);
+}
+
+.mm-btn-primary:hover:not(:disabled) {
+  background: var(--mm-ink);
+  border-color: var(--mm-ink);
+}
+
+.mm-btn-clay {
+  background: var(--mm-clay);
+  color: #0b1020;
+  border-color: var(--mm-clay);
+  font-weight: 600;
+}
+
+[data-mm-mode="night"] .mm-btn-clay {
+  box-shadow: var(--mm-glow-clay), inset 0 0 0 1px rgba(200, 255, 91, 0.4);
+  text-shadow: 0 0 6px rgba(200, 255, 91, 0.4);
+}
+
+[data-mm-mode="night"] .mm-btn-clay:hover:not(:disabled) {
+  box-shadow: var(--mm-glow-clay-2), inset 0 0 0 1px rgba(200, 255, 91, 0.6);
+  transform: translateY(-1px);
+}
+
+[data-mm-mode="day"] .mm-btn-clay:hover:not(:disabled) {
+  background: var(--mm-clay-2);
+  border-color: var(--mm-clay-2);
+  color: var(--mm-bone);
+}
+
+.mm-btn-ghost {
+  background: transparent;
+  border-color: transparent;
+  color: var(--mm-ink-2);
+}
+
+.mm-btn-ghost:hover:not(:disabled) {
+  background: var(--mm-bone-2);
+  border-color: var(--mm-rule);
+  transform: none;
+  box-shadow: none;
+}
+
+.mm-btn-danger {
+  color: var(--mm-berry);
+  background: transparent;
+  border-color: transparent;
+}
+
+.mm-btn-danger:hover:not(:disabled) {
+  background: rgba(255, 122, 184, 0.08);
+  border-color: var(--mm-berry);
+  transform: none;
+}
+
+.mm-btn-sm {
+  font-size: var(--mm-text-xs);
+  padding: 5px 11px;
+}
+
+/* ── Pills, chips, badges ─────────────────────────────────────────────────── */
+
+.mm-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 11px;
+  border-radius: var(--mm-radius-pill);
+  font-family: var(--mm-font-body);
+  font-size: 12px;
+  font-weight: 500;
+  border: 1px solid var(--mm-rule);
+  background: var(--mm-bone);
+  color: var(--mm-ink);
+  white-space: nowrap;
+}
+
+.mm-pill .mm-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+[data-mm-mode="night"] .mm-pill .mm-dot {
+  box-shadow: 0 0 8px currentColor;
+}
+
+.mm-pill-active {
+  background: var(--mm-ink);
+  color: var(--mm-bone);
+  border-color: var(--mm-ink);
+}
+
+.mm-pill-clay {
+  background: var(--mm-clay-soft);
+  color: var(--mm-clay);
+  border-color: transparent;
+  font-weight: 600;
+}
+
+[data-mm-mode="day"] .mm-pill-clay {
+  color: var(--mm-clay-2);
+}
+
+.mm-pill-sage {
+  background: var(--mm-sage-soft);
+  color: var(--mm-sage);
+  border-color: transparent;
+}
+
+[data-mm-mode="day"] .mm-pill-sage {
+  color: var(--mm-sage-2);
+}
+
+.mm-pill-quiet {
+  background: var(--mm-bone-3);
+  color: var(--mm-ink-2);
+  border-color: transparent;
+}
+
+/* v0.2.9: overlap-hint badge sits next to the speaker chip on flagged
+   transcript rows; smaller than a default pill so it doesn't shout.
+   v0.2.10: button variant (mm-overlap-badge-link) is clickable to jump
+   to the partner segment. Tone variants color-cue the badge by hint
+   kind so reviewers can scan for the patterns they care about
+   (sage=yield, clay=interrupt, berry=crosstalk). */
+.mm-overlap-badge {
+  font-size: 10px;
+  padding: 1px 6px;
+}
+.mm-overlap-badge-yield {
+  background: color-mix(in srgb, var(--mm-sage) 16%, transparent);
+  color: var(--mm-sage);
+}
+.mm-overlap-badge-interrupt {
+  background: color-mix(in srgb, var(--mm-clay) 16%, transparent);
+  color: var(--mm-clay);
+}
+.mm-overlap-badge-crosstalk {
+  background: color-mix(in srgb, var(--mm-berry) 16%, transparent);
+  color: var(--mm-berry);
+}
+button.mm-overlap-badge-link {
+  cursor: pointer;
+  border-style: dashed;
+  font-family: inherit;
+}
+button.mm-overlap-badge-link:hover {
+  background: var(--mm-bone-2);
+  color: var(--mm-ink-1);
+}
+
+/* Speaker chip — colored by data-spk attribute */
+[data-spk="1"] {
+  --mm-spkc: var(--mm-spk-1-fg);
+  --mm-spkbg: var(--mm-spk-1-bg);
+}
+[data-spk="2"] {
+  --mm-spkc: var(--mm-spk-2-fg);
+  --mm-spkbg: var(--mm-spk-2-bg);
+}
+[data-spk="3"] {
+  --mm-spkc: var(--mm-spk-3-fg);
+  --mm-spkbg: var(--mm-spk-3-bg);
+}
+[data-spk="4"] {
+  --mm-spkc: var(--mm-spk-4-fg);
+  --mm-spkbg: var(--mm-spk-4-bg);
+}
+[data-spk="5"] {
+  --mm-spkc: var(--mm-spk-5-fg);
+  --mm-spkbg: var(--mm-spk-5-bg);
+}
+[data-spk="6"] {
+  --mm-spkc: var(--mm-spk-6-fg);
+  --mm-spkbg: var(--mm-spk-6-bg);
+}
+
+.mm-spk-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 11px;
+  border-radius: var(--mm-radius-pill);
+  font-size: 12px;
+  font-weight: 500;
+  background: var(--mm-spkbg, var(--mm-bone-3));
+  color: var(--mm-spkc, var(--mm-ink));
+  border: none;
+  cursor: pointer;
+  font-family: var(--mm-font-body);
+  white-space: nowrap;
+  transition: filter var(--mm-dur-fast) var(--mm-ease-out);
+}
+
+.mm-spk-chip::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--mm-spkc, currentColor);
+  flex-shrink: 0;
+}
+
+.mm-spk-chip:hover {
+  filter: brightness(1.15);
+}
+
+.mm-spk-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--mm-spkbg, var(--mm-bone-3));
+  color: var(--mm-spkc, var(--mm-ink));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mm-font-display);
+  font-size: 20px;
+  font-style: italic;
+  flex-shrink: 0;
+}
+
+.mm-spk-dot {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--mm-spkbg, var(--mm-bone-3));
+  border: 2px solid var(--mm-bone);
+}
+
+/* ── Cards & panels ───────────────────────────────────────────────────────── */
+
+.mm-card {
+  background: var(--mm-bone-2);
+  border: 1px solid var(--mm-rule);
+  border-radius: var(--mm-radius);
+  padding: 16px 20px;
+}
+
+.mm-panel {
+  background: var(--mm-bone-2);
+  border: 1px solid var(--mm-rule);
+  border-radius: var(--mm-radius-lg);
+  padding: 24px;
+}
+
+.mm-panel-flush {
+  background: var(--mm-bone-2);
+  border: 1px solid var(--mm-rule);
+  border-radius: var(--mm-radius-lg);
+  padding: 0;
+  overflow: hidden;
+}
+
+/* ── Form controls ────────────────────────────────────────────────────────── */
+
+.mm-input {
+  font-family: var(--mm-font-body);
+  font-size: var(--mm-text-base);
+  background: var(--mm-bone);
+  border: 1px solid var(--mm-rule);
+  padding: 10px 14px;
+  color: var(--mm-ink);
+  outline: none;
+  width: 100%;
+  border-radius: var(--mm-radius-pill);
+  transition: border-color var(--mm-dur-fast), box-shadow var(--mm-dur-fast);
+}
+
+.mm-input:focus {
+  border-color: var(--mm-clay);
+}
+
+[data-mm-mode="night"] .mm-input:focus {
+  box-shadow: 0 0 0 3px rgba(200, 255, 91, 0.15);
+}
+
+.mm-input-square {
+  border-radius: var(--mm-radius);
+}
+
+textarea.mm-input {
+  border-radius: var(--mm-radius);
+  resize: vertical;
+  min-height: 120px;
+  line-height: 1.55;
+}
+
+select.mm-input {
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, var(--mm-ink-3) 50%),
+    linear-gradient(135deg, var(--mm-ink-3) 50%, transparent 50%);
+  background-position: calc(100% - 18px) 50%, calc(100% - 13px) 50%;
+  background-size: 5px 5px;
+  background-repeat: no-repeat;
+  padding-right: 32px;
+}
+
+.mm-kbd {
+  font-family: var(--mm-font-mono);
+  font-size: 10px;
+  border: 1px solid var(--mm-rule);
+  padding: 1px 5px;
+  color: var(--mm-ink-3);
+  background: var(--mm-bone);
+  border-radius: 4px;
+}
+
+/* ── Confidence bar ───────────────────────────────────────────────────────── */
+
+.mm-confidence-bar {
+  height: 4px;
+  background: var(--mm-bone-3);
+  border-radius: 999px;
+  overflow: hidden;
+  flex: 1;
+  min-width: 40px;
+}
+
+.mm-confidence-bar > i {
+  display: block;
+  height: 100%;
+  background: var(--mm-sage-2);
+  border-radius: 999px;
+}
+
+[data-mm-mode="night"] .mm-confidence-bar > i {
+  background: var(--mm-clay);
+  box-shadow: 0 0 8px rgba(200, 255, 91, 0.5);
+}
+
+.mm-confidence-bar.is-low > i {
+  background: var(--mm-clay);
+}
+
+/* Night mode: high-confidence already uses chartreuse clay. Reuse the
+ * danger token for is-low so a low-confidence bar reads as a warning
+ * rather than glowing identically to the brand accent. */
+[data-mm-mode="night"] .mm-confidence-bar.is-low > i {
+  background: var(--mm-rust);
+  box-shadow: 0 0 8px rgba(255, 122, 89, 0.45);
+}
+
+[data-mm-mode="night"] .mm-confidence-bar.is-mid > i {
+  background: var(--mm-ink-2);
+  box-shadow: none;
+}
+
+.mm-confidence-bar.is-mid > i {
+  background: var(--mm-ink-2);
+}
+
+/* ── Live indicator ──────────────────────────────────────────────────────── */
+
+@keyframes mm-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+.mm-live {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--mm-clay);
+  box-shadow: var(--mm-glow-live);
+  animation: mm-pulse 1.8s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+/* ── App shell ────────────────────────────────────────────────────────────── */
+
+.mm-shell {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  background: transparent;
+}
+
+.mm-main {
+  flex: 1;
+  min-width: 0;
+  overflow: visible;
+  position: relative;
+}
+
+/* ── Sidebar ──────────────────────────────────────────────────────────────── */
+
+.mm-sidebar {
+  width: 240px;
+  padding: 28px 0 20px;
+  background: var(--mm-bone);
+  border-right: 1px solid var(--mm-rule);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  position: sticky;
+  top: 0;
+  flex-shrink: 0;
+  align-self: flex-start;
+}
+
+[data-mm-mode="night"] .mm-sidebar {
+  background: rgba(11, 16, 32, 0.92);
+  backdrop-filter: blur(6px);
+}
+
+.mm-sidebar-brand {
+  padding: 0 20px 24px;
+}
+
+.mm-sidebar-nav {
+  flex: 1;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.mm-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 11px 18px;
+  margin: 1px 12px;
+  cursor: pointer;
+  font-size: var(--mm-text-base);
+  color: var(--mm-ink-2);
+  border-radius: var(--mm-radius-pill);
+  background: transparent;
+  border: none;
+  width: calc(100% - 24px);
+  text-align: left;
+  font-family: var(--mm-font-body);
+  transition: all var(--mm-dur-fast);
+}
+
+.mm-nav-item:hover {
+  background: var(--mm-bone-2);
+  color: var(--mm-ink);
+}
+
+[data-mm-mode="night"] .mm-nav-item.is-active {
+  background: rgba(140, 102, 232, 0.16);
+  color: var(--mm-ink);
+  box-shadow: inset 2px 0 0 var(--mm-clay);
+}
+
+[data-mm-mode="day"] .mm-nav-item.is-active {
+  background: var(--mm-ink);
+  color: var(--mm-bone);
+}
+
+.mm-nav-item .mm-glyph {
+  width: 18px;
+  text-align: center;
+  font-family: var(--mm-font-mono);
+  color: var(--mm-clay);
+  font-size: 14px;
+  line-height: 1;
+}
+
+[data-mm-mode="night"] .mm-nav-item.is-active .mm-glyph {
+  text-shadow: 0 0 8px rgba(200, 255, 91, 0.5);
+}
+
+[data-mm-mode="day"] .mm-nav-item.is-active .mm-glyph {
+  color: var(--mm-clay);
+}
+
+.mm-nav-item .mm-count {
+  font-family: var(--mm-font-mono);
+  font-size: 10px;
+  opacity: 0.7;
+  margin-left: auto;
+}
+
+.mm-sidebar-foot {
+  margin: 0 20px;
+  padding: 14px 0 0;
+  border-top: 1px solid var(--mm-rule);
+}
+
+.mm-sidebar-foot .mm-foot-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  color: var(--mm-ink-2);
+}
+
+.mm-sidebar-foot .mm-foot-row .mm-mono {
+  font-size: 11px;
+  letter-spacing: 0.06em;
+}
+
+/* ── Notice strip ────────────────────────────────────────────────────────── */
+
+.mm-notice {
+  margin: 20px 56px 0;
+  padding: 14px 18px;
+  background: var(--mm-bone-2);
+  border: 1px solid var(--mm-rule);
+  border-left: 3px solid var(--mm-clay);
+  border-radius: 10px;
+  font-size: var(--mm-text-sm);
+  color: var(--mm-ink-2);
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: center;
+}
+
+.mm-notice button {
+  background: transparent;
+  border: none;
+  color: var(--mm-ink-3);
+  cursor: pointer;
+  font-size: 16px;
+  padding: 0 4px;
+  font-family: var(--mm-font-mono);
+}
+
+/* ── Generic empty ───────────────────────────────────────────────────────── */
+
+.mm-empty {
+  font-family: var(--mm-font-display);
+  font-style: italic;
+  color: var(--mm-ink-3);
+  margin: 18px 0;
+}
+
+.mm-empty-center {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+/* ── Arch window decoration (Inbox) ──────────────────────────────────────── */
+
+.mm-arch {
+  width: 36px;
+  height: 56px;
+  background: var(--mm-bone-3);
+  border: 1px solid var(--mm-rule);
+  border-top-left-radius: 18px;
+  border-top-right-radius: 18px;
+  position: relative;
+}
+
+.mm-arch::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--mm-rule);
+  transform: translateX(-0.5px);
+}
+
+.mm-arch::before {
+  content: "";
+  position: absolute;
+  top: 18px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--mm-rule);
+}
+
+/* ── Screens ─────────────────────────────────────────────────────────────── */
+
+.mm-screen {
+  padding: 40px 56px 80px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.mm-screen-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 24px;
+  margin-bottom: 22px;
+  flex-wrap: wrap;
+}
+
+.mm-screen-header h1 {
+  font-family: var(--mm-font-display);
+  font-size: 64px;
+  font-weight: 400;
+  letter-spacing: var(--mm-tracking-tight);
+  line-height: 0.98;
+  margin: 8px 0 0;
+}
+
+.mm-screen-sub {
+  color: var(--mm-ink-3);
+  font-size: var(--mm-text-base);
+  margin: 8px 0 0;
+  max-width: 520px;
+}
+
+.mm-screen-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* ── Inbox ───────────────────────────────────────────────────────────────── */
+
+.mm-inbox-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 32px;
+}
+
+@media (max-width: 1100px) {
+  .mm-inbox-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.mm-inbox-drop {
+  padding: 40px 30px;
+  text-align: center;
+  background: var(--mm-bone-2);
+  border: 1px solid var(--mm-rule);
+  border-radius: var(--mm-radius);
+}
+
+.mm-inbox-drop .mm-arches {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 18px;
+}
+
+.mm-inbox-drop h3 {
+  font-family: var(--mm-font-display);
+  font-weight: 400;
+  font-size: 30px;
+  letter-spacing: var(--mm-tracking-tight);
+  line-height: 1;
+  margin: 0 0 6px;
+}
+
+.mm-inbox-drop p {
+  color: var(--mm-ink-3);
+  font-size: 13px;
+  max-width: 320px;
+  margin: 0 auto 18px;
+}
+
+.mm-inbox-formats {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.mm-inbox-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+/* Inbox row layout lives further down (line ~3927) alongside the
+ * template-selector column. Earlier 4-col definition removed. */
+.mm-inbox-row.is-unsupported {
+  opacity: 0.55;
+}
+
+.mm-inbox-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: var(--mm-clay-soft);
+  color: var(--mm-clay);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mm-font-display);
+  font-style: italic;
+  font-size: 18px;
+}
+
+[data-mm-mode="day"] .mm-inbox-icon {
+  color: var(--mm-clay-2);
+}
+
+.mm-inbox-foot {
+  margin-top: 22px;
+  padding: 12px 16px;
+  background: var(--mm-bone-2);
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  font-size: 11px;
+  color: var(--mm-ink-3);
+  flex-wrap: wrap;
+}
+
+/* ── Review screen split ─────────────────────────────────────────────────── */
+
+.mm-review-split {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.mm-review-rail {
+  width: 290px;
+  border-right: 1px solid var(--mm-rule);
+  padding: 36px 22px;
+  background: var(--mm-bone-2);
+  flex-shrink: 0;
+  overflow-y: auto;
+  position: sticky;
+  top: 0;
+  max-height: 100vh;
+}
+
+.mm-review-rail h2 {
+  font-family: var(--mm-font-display);
+  font-size: 36px;
+  font-weight: 400;
+  letter-spacing: var(--mm-tracking-tight);
+  line-height: 0.98;
+  margin: 4px 0 0;
+}
+
+.mm-meeting-card {
+  background: var(--mm-bone);
+  border: 1px solid var(--mm-rule);
+  border-radius: var(--mm-radius);
+  padding: 16px;
+  margin-top: 10px;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  font-family: var(--mm-font-body);
+  color: inherit;
+  transition: border-color var(--mm-dur-fast);
+}
+
+.mm-meeting-card:hover {
+  border-color: var(--mm-ink-3);
+}
+
+.mm-meeting-card.is-selected {
+  border-color: var(--mm-ink);
+}
+
+.mm-meeting-card .mm-meeting-title {
+  font-family: var(--mm-font-display);
+  font-weight: 400;
+  font-size: 20px;
+  letter-spacing: var(--mm-tracking-tight);
+  line-height: 1.1;
+  margin: 6px 0 0;
+  color: var(--mm-ink);
+  /* Long underscore-separated slugs (e.g. fixture names like
+   * "sample_company_q3_roadmap") have no natural break points and
+   * overflow the card edge. `overflow-wrap: anywhere` allows breaks
+   * at any character when nothing else fits. */
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.mm-meeting-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.mm-card-delete {
+  background: transparent;
+  border: none;
+  color: var(--mm-ink-3);
+  cursor: pointer;
+  font-size: 14px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: color var(--mm-dur-fast), background var(--mm-dur-fast);
+  font-family: var(--mm-font-mono);
+}
+
+.mm-card-delete:hover {
+  color: var(--mm-berry);
+  background: rgba(255, 122, 184, 0.08);
+}
+
+/* ── Export dropdown ─────────────────────────────────────────────────────── */
+
+.mm-export-menu {
+  position: relative;
+  display: inline-block;
+}
+
+.mm-export-menu-pop {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 6px);
+  min-width: 240px;
+  background: var(--mm-bone-2);
+  border: 1px solid var(--mm-rule);
+  border-radius: var(--mm-radius);
+  box-shadow: var(--mm-shadow-modal);
+  /* Above the modal backdrop layer (80) so the dropdown is never clipped
+     by the sticky transcript rail or hero. */
+  z-index: 100;
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.mm-export-menu-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 12px;
+  cursor: pointer;
+  text-align: left;
+  color: var(--mm-ink);
+  font-family: var(--mm-font-body);
+  transition: background var(--mm-dur-fast);
+}
+
+.mm-export-menu-item span {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.mm-export-menu-item small {
+  font-size: 11px;
+  color: var(--mm-ink-3);
+}
+
+.mm-export-menu-item:hover {
+  background: var(--mm-bone-3);
+}
+
+/* ── People screen ───────────────────────────────────────────────────────── */
+
+.mm-people-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+}
+
+.mm-people-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+  background: var(--mm-bone-2);
+  position: relative;
+  border: 1px solid var(--mm-rule);
+  border-radius: var(--mm-radius);
+  cursor: pointer;
+  text-align: left;
+  color: inherit;
+  font-family: var(--mm-font-body);
+  transition: border-color var(--mm-dur-fast);
+}
+
+.mm-people-claim {
+  align-self: center;
+  flex-shrink: 0;
+  white-space: nowrap;
+  margin-left: auto;
+}
+
+.mm-people-card:hover {
+  border-color: var(--mm-ink);
+}
+
+.mm-people-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.mm-people-actions {
+  list-style: none;
+  padding: 0;
+  margin: 14px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.mm-people-actions li {
+  padding: 10px 14px;
+  background: var(--mm-bone-2);
+  border: 1px solid var(--mm-rule);
+  border-radius: var(--mm-radius);
+  font-size: 13px;
+  color: var(--mm-ink-2);
+  line-height: 1.6;
+}
+
+/* ── Archive heatmap ─────────────────────────────────────────────────────── */
+
+.mm-archive-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 32px;
+}
+
+@media (max-width: 1100px) {
+  .mm-archive-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.mm-heatmap {
+  margin-top: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mm-heatmap-row {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.mm-heatmap-label {
+  width: 16px;
+  text-align: center;
+  font-family: var(--mm-font-mono);
+  font-size: 9px;
+  color: var(--mm-ink-3);
+}
+
+.mm-heatmap-cell {
+  flex: 1;
+  height: 14px;
+  border-radius: 3px;
+  cursor: help;
+}
+
+.mm-archive-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+@media (max-width: 700px) {
+  .mm-archive-stats {
+    grid-template-columns: 1fr;
+  }
+}
+
+.mm-archive-reel-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 14px;
+  padding: 14px 18px;
+  align-items: center;
+  background: var(--mm-bone-2);
+  border: 1px solid var(--mm-rule);
+  border-radius: var(--mm-radius);
+  margin-bottom: 10px;
+  text-align: left;
+  cursor: pointer;
+  color: inherit;
+  width: 100%;
+  font-family: var(--mm-font-body);
+}
+
+.mm-archive-reel-row:hover {
+  border-color: var(--mm-ink);
+}
+
+/* ── Command palette ─────────────────────────────────────────────────────── */
+
+.mm-palette {
+  width: 640px;
+  max-width: 100%;
+  background: var(--mm-bone-2);
+  border: 1px solid var(--mm-rule);
+  border-radius: var(--mm-radius-lg);
+  box-shadow: var(--mm-shadow-modal);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  max-height: 80vh;
+}
+
+.mm-palette-input {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--mm-rule);
+  padding: 18px 22px;
+  font-family: var(--mm-font-body);
+  font-size: 16px;
+  color: var(--mm-ink);
+  outline: none;
+}
+
+.mm-palette-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.mm-palette-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-family: var(--mm-font-body);
+  font-size: 14px;
+  color: var(--mm-ink);
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--mm-dur-fast);
+}
+
+.mm-palette-item.is-active {
+  background: var(--mm-bone-3);
+}
+
+[data-mm-mode="night"] .mm-palette-item.is-active {
+  background: rgba(140, 102, 232, 0.18);
+}
+
+.mm-palette-empty {
+  padding: 32px;
+  text-align: center;
+  font-family: var(--mm-font-display);
+  font-style: italic;
+  color: var(--mm-ink-3);
+}
+
+.mm-palette-foot {
+  display: flex;
+  gap: 18px;
+  justify-content: flex-end;
+  padding: 10px 18px;
+  border-top: 1px solid var(--mm-rule);
+  font-family: var(--mm-font-mono);
+  font-size: 10px;
+  color: var(--mm-ink-3);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+/* ── Audio waveform ──────────────────────────────────────────────────────── */
+
+.mm-waveform {
+  background: var(--mm-bone-2);
+  border: 1px solid var(--mm-rule);
+  border-radius: var(--mm-radius);
+  padding: 12px 18px;
+  margin-bottom: 18px;
+}
+
+.mm-waveform svg {
+  display: block;
+  width: 100%;
+  height: 64px;
+}
+
+.mm-waveform-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 8px;
+  font-family: var(--mm-font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--mm-ink-3);
+}
+
+.mm-waveform-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.mm-waveform-legend i {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+}
+
+/* ── Segment comments + edit history ─────────────────────────────────────── */
+
+.mm-tx-extras {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--mm-rule-soft);
+}
+
+.mm-tx-extras-bar {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+  font-family: var(--mm-font-mono);
+  font-size: 11px;
+  color: var(--mm-ink-3);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+}
+
+.mm-tx-extras-bar button {
+  background: transparent;
+  border: none;
+  color: var(--mm-ink-2);
+  cursor: pointer;
+  font-family: var(--mm-font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  padding: 0;
+}
+
+.mm-tx-extras-bar button:hover {
+  color: var(--mm-clay);
+}
+
+.mm-comment {
+  background: var(--mm-bone);
+  border: 1px solid var(--mm-rule);
+  border-radius: 8px;
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 13px;
+  color: var(--mm-ink-2);
+  line-height: 1.55;
+}
+
+.mm-comment-meta {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--mm-font-mono);
+  font-size: 10px;
+  color: var(--mm-ink-3);
+  letter-spacing: 0.06em;
+}
+
+.mm-comment-meta button {
+  background: transparent;
+  border: none;
+  color: var(--mm-berry);
+  cursor: pointer;
+  font-family: var(--mm-font-mono);
+  font-size: 10px;
+}
+
+.mm-comment-input {
+  display: flex;
+  gap: 6px;
+}
+
+.mm-comment-input textarea {
+  flex: 1;
+  background: var(--mm-bone);
+  border: 1px solid var(--mm-rule);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-family: var(--mm-font-body);
+  font-size: 13px;
+  color: var(--mm-ink);
+  resize: vertical;
+  min-height: 36px;
+  outline: none;
+}
+
+.mm-edit-history {
+  background: var(--mm-bone);
+  border: 1px solid var(--mm-rule);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 12px;
+}
+
+.mm-edit-history-row {
+  padding: 6px 0;
+  border-bottom: 1px dotted var(--mm-rule-soft);
+  display: grid;
+  grid-template-columns: 90px 1fr auto;
+  gap: 10px;
+  align-items: baseline;
+}
+
+.mm-edit-history-row:last-child {
+  border-bottom: none;
+}
+
+.mm-edit-history-row .mm-mono {
+  font-size: 10px;
+  color: var(--mm-ink-3);
+}
+
+.mm-edit-history-row p {
+  margin: 0;
+  color: var(--mm-ink-2);
+  line-height: 1.5;
+}
+
+/* ── Template picker ─────────────────────────────────────────────────────── */
+
+.mm-template-picker {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--mm-font-mono);
+  font-size: 9px;
+  color: var(--mm-ink-3);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  opacity: 0.7;
+  margin-left: 4px;
+}
+
+.mm-template-picker:hover {
+  opacity: 1;
+}
+
+.mm-template-picker select {
+  font-family: var(--mm-font-body);
+  font-size: 11px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-bottom: 1px dotted var(--mm-rule);
+  border-radius: 0;
+  padding: 2px 4px;
+  color: var(--mm-ink-2);
+  text-transform: none;
+  letter-spacing: 0;
+  cursor: pointer;
+}
+
+.mm-template-picker select:hover,
+.mm-template-picker select:focus {
+  color: var(--mm-ink);
+  border-bottom-color: var(--mm-clay);
+  outline: none;
+}
+
+/* Workstream confidence bars — replaces the old pill row. Mirrors the PDF
+ * treatment so the same data reads identically in the dashboard and in the
+ * exported note. */
+.mm-ws-bars {
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mm-ws-bar {
+  display: grid;
+  grid-template-columns: 1fr 120px 44px;
+  gap: 12px;
+  align-items: center;
+  font-size: 12.5px;
+}
+
+.mm-ws-bar-name {
+  color: var(--mm-ink);
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mm-ws-bar-track {
+  display: block;
+  height: 4px;
+  background: var(--mm-rule-soft, rgba(255, 255, 255, 0.08));
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.mm-ws-bar-fill {
+  display: block;
+  height: 100%;
+  background: var(--mm-clay);
+  border-radius: 999px;
+}
+
+.mm-ws-bar-mid .mm-ws-bar-fill {
+  background: var(--mm-ink-2);
+}
+
+.mm-ws-bar-low .mm-ws-bar-fill {
+  background: var(--mm-ink-4, var(--mm-ink-3));
+  opacity: 0.7;
+}
+
+.mm-ws-bar-pct {
+  font-size: 10px;
+  color: var(--mm-ink-3);
+  text-align: right;
+}
+
+/* Drag-and-drop drop zone */
+.mm-inbox-drop {
+  transition: background-color var(--mm-dur-fast), border-color var(--mm-dur-fast);
+}
+
+.mm-inbox-drop.is-dragover {
+  background-color: rgba(200, 255, 91, 0.06);
+  border-color: var(--mm-clay);
+  outline: 2px dashed var(--mm-clay);
+  outline-offset: 4px;
+}
+
+/* TL;DR — top-of-page canonical summary. Subsumed three earlier
+ * surfaces (Synopsis tile + Summary editor + What-it-covered list). */
+.mm-tldr {
+  margin: 28px 0 18px;
+  padding: 24px 28px;
+  background: linear-gradient(
+    135deg,
+    rgba(200, 255, 91, 0.04) 0%,
+    transparent 60%
+  );
+  border: 1px solid var(--mm-rule);
+  border-radius: var(--mm-radius);
+  position: relative;
+}
+
+.mm-tldr .mm-lbl-strong {
+  margin-bottom: 10px;
+  letter-spacing: 0.22em;
+  color: var(--mm-clay);
+}
+
+.mm-tldr-text {
+  font-family: var(--mm-font-display);
+  font-size: 19px;
+  line-height: 1.5;
+  letter-spacing: -0.005em;
+  color: var(--mm-ink);
+  margin: 0;
+}
+
+.mm-tldr-edit {
+  margin-top: 14px;
+  border-top: 1px dotted var(--mm-rule);
+  padding-top: 14px;
+}
+
+/* Expander that reveals the long-form summary. Collapsed by default so
+ * the TL;DR headline isn't drowned in a 1700-char paragraph. */
+.mm-tldr-more {
+  margin-top: 14px;
+}
+
+.mm-tldr-more > summary {
+  cursor: pointer;
+  font-family: var(--mm-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--mm-ink-3);
+  list-style: none;
+  outline: none;
+  user-select: none;
+}
+
+.mm-tldr-more > summary::-webkit-details-marker {
+  display: none;
+}
+
+.mm-tldr-more > summary::before {
+  content: "▸ ";
+  display: inline-block;
+  transition: transform var(--mm-dur-fast);
+}
+
+.mm-tldr-more[open] > summary::before {
+  transform: rotate(90deg);
+}
+
+.mm-tldr-more > summary:hover {
+  color: var(--mm-ink);
+}
+
+[data-mm-mode="day"] .mm-tldr {
+  background: linear-gradient(
+    135deg,
+    var(--mm-clay-soft) 0%,
+    transparent 60%
+  );
+}
+
+/* Quieter variant of the hero strip: smaller, no confidence metric. */
+.mm-hero-strip-quiet {
+  margin: 0 0 26px;
+  opacity: 0.95;
+}
+
+.mm-hero-strip-quiet .mm-hero-value {
+  font-size: 26px;
+}
+
+/* Action items — primary post-TL;DR surface. */
+.mm-action-list {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mm-action-row {
+  display: grid;
+  grid-template-columns: 24px 1fr;
+  gap: 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--mm-rule);
+  border-radius: 8px;
+  align-items: flex-start;
+  line-height: 1.5;
+  background: var(--mm-bone-2);
+}
+
+.mm-action-row.mm-action-yours-row {
+  border-color: var(--mm-clay);
+  background: rgba(200, 255, 91, 0.05);
+}
+
+.mm-recap {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  /* Tier 1 of the IA. Background-contrast alone delineates the section
+   * — no border, more breathing room. The card chrome from the prior
+   * iteration made the recap feel boxed-in; the lead element should
+   * feel open. */
+  margin: 28px 0 36px;
+  padding: 32px 36px;
+  border: none;
+  border-radius: 14px;
+  background: var(--mm-bone-2);
+}
+
+.mm-recap-block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mm-recap-header {
+  font-family: var(--mm-font-display);
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--mm-ink-1);
+  margin: 0;
+}
+
+.mm-recap-body {
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--mm-ink-2);
+  margin: 0;
+}
+
+/* Italic emphasis in recap prose — the pivotal-claim treatment.
+ * Sans-serif italic alone is too subtle in the body font; pairing
+ * italic with the brand accent color shifts the line out of body
+ * tone without changing the font. The prompt's "one italic per
+ * recap" rule means this color shows up at most once in any recap,
+ * so it stays distinctive. */
+.mm-recap-body em,
+.mm-recap-trailer em {
+  color: var(--mm-clay);
+  font-style: italic;
+}
+
+/* Day-mode override: `--mm-clay` is #5c8a14 on the cream card,
+ * which gives a 3.33:1 contrast ratio against body-size text —
+ * below WCAG AA's 4.5:1 floor. Step down to `--mm-clay-2` (#3f6308)
+ * which is the darker olive already defined in the theme and passes
+ * AA. Night-mode and high-contrast modes use the brighter clay
+ * without contrast issues. */
+[data-mm-mode="day"] .mm-recap-body em,
+[data-mm-mode="day"] .mm-recap-trailer em {
+  color: var(--mm-clay-2);
+}
+
+.mm-recap-bullets {
+  list-style: none;
+  padding: 0;
+  margin: 4px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.mm-recap-bullets li {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--mm-ink-2);
+  padding-left: 14px;
+  position: relative;
+}
+
+.mm-recap-bullets li::before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: var(--mm-ink-3);
+}
+
+.mm-recap-purpose {
+  color: var(--mm-ink-3);
+  font-style: italic;
+}
+
+/* Strategy bullets become clickable when the matcher resolves them to
+ * an action row. Button styling matches the surrounding li text so the
+ * recap stays prose-like — only the hover state hints interactivity. */
+/* Commitments sub-headers — used when an executive recap is present
+ * to slot Action items / Decisions / Open questions under a single
+ * "Commitments" SectionRule. Lighter than the rule treatment so three
+ * commitment kinds don't stack three rule lines. */
+.mm-commitments-subhead {
+  font-family: var(--mm-font-display);
+  font-style: italic;
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--mm-ink-1);
+  margin: 22px 0 10px;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.mm-commitments-subhead-count {
+  font-family: var(--mm-font-mono, monospace);
+  font-style: normal;
+  font-size: 12px;
+  color: var(--mm-ink-3);
+  letter-spacing: 0.04em;
+}
+
+/* Tier 3 analytics disclosure. Collapsed by default when an executive
+ * recap is present — health chips, drivers, stat callouts, tension
+ * points sit underneath so they're available without crowding the
+ * lead. */
+.mm-analytics-disclosure {
+  margin: 24px 0;
+  padding: 0;
+}
+
+.mm-analytics-disclosure > summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 14px 18px;
+  border-radius: 10px;
+  background: var(--mm-bone-2);
+  font-family: var(--mm-font-display);
+  font-style: italic;
+  font-size: 16px;
+  color: var(--mm-ink-2);
+  user-select: none;
+}
+
+.mm-analytics-disclosure > summary::-webkit-details-marker {
+  display: none;
+}
+
+.mm-analytics-disclosure > summary::before {
+  content: "›";
+  display: inline-block;
+  width: 18px;
+  font-style: normal;
+  color: var(--mm-ink-3);
+  transition: transform 200ms ease;
+}
+
+.mm-analytics-disclosure[open] > summary::before {
+  transform: rotate(90deg);
+}
+
+.mm-analytics-body {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 18px 4px 0;
+}
+
+.mm-recap-bullet-link {
+  display: inline;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+  font: inherit;
+  line-height: inherit;
+  cursor: pointer;
+}
+
+.mm-recap-bullet-link:hover,
+.mm-recap-bullet-link:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--mm-rule);
+  outline: none;
+}
+
+@keyframes mm-action-flash {
+  0% { background: var(--mm-clay-soft, rgba(200, 255, 91, 0.18)); }
+  100% { background: inherit; }
+}
+
+.mm-action-row.mm-action-row-flash {
+  animation: mm-action-flash 1.6s ease-out;
+}
+
+.mm-recap-trailer {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--mm-ink-3);
+  margin: 4px 0 0;
+  font-style: italic;
+}
+
+.mm-action-cluster-tag {
+  font-size: 12px;
+  color: var(--mm-ink-3);
+  font-style: italic;
+  margin-left: 6px;
+  white-space: nowrap;
+}
+
+[data-mm-mode="day"] .mm-action-row.mm-action-yours-row {
+  background: var(--mm-clay-soft);
+}
+
+.mm-action-bullet {
+  font-family: var(--mm-font-display);
+  font-style: italic;
+  color: var(--mm-ink-3);
+  text-align: center;
+  line-height: 1.5;
+}
+
+.mm-action-yours-row .mm-action-bullet {
+  color: var(--mm-clay);
+}
+
+/* Decisions — bulleted, slightly lighter weight than action rows. */
+.mm-decision-list {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mm-decision-list li {
+  display: grid;
+  grid-template-columns: 24px 1fr;
+  gap: 10px;
+  padding: 6px 0;
+  line-height: 1.55;
+  align-items: baseline;
+}
+
+/* Rationale line below a decision — subdued, mono label, sits clearly
+ * attached so a skim can pass over it but a careful read picks up "why". */
+.mm-decision-rationale {
+  margin-top: 4px;
+  font-size: 13px;
+  color: var(--mm-ink-3);
+  line-height: 1.5;
+}
+
+.mm-rationale-label {
+  font-family: var(--mm-font-mono);
+  font-size: 11px;
+  color: var(--mm-ink-4, var(--mm-ink-3));
+  text-transform: lowercase;
+  letter-spacing: 0.04em;
+  margin-right: 4px;
+}
+
+/* Status pill on open questions — only renders for partially_answered or
+ * deferred (unanswered is the silent default so most meetings stay quiet). */
+.mm-oq-status {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 1px 7px;
+  font-family: var(--mm-font-mono);
+  font-size: 10px;
+  text-transform: lowercase;
+  letter-spacing: 0.05em;
+  border-radius: 10px;
+  vertical-align: middle;
+  line-height: 1.6;
+  background: var(--mm-bone-2);
+  color: var(--mm-ink-3);
+  border: 1px solid var(--mm-rule);
+}
+
+.mm-oq-status-deferred {
+  font-style: italic;
+}
+
+.mm-oq-attribution {
+  display: inline-block;
+  margin-left: 8px;
+  font-size: 12px;
+  color: var(--mm-ink-3);
+  font-style: italic;
+}
+
+/* Topic threads — replaces the workstream pill row + confidence-bar tile.
+ * Each topic is a named thread with a one-line concrete content summary. */
+.mm-topic-thread-list {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.mm-topic-thread {
+  padding: 14px 16px;
+  background: var(--mm-bone-2);
+  border: 1px solid var(--mm-rule);
+  border-radius: 8px;
+}
+
+.mm-topic-thread-name {
+  margin: 0 0 6px;
+  font-family: var(--mm-font-body);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  color: var(--mm-ink);
+}
+
+.mm-topic-thread-desc {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--mm-ink-2);
+}
+
+/* Featured topic — first two topics get a slightly larger, more prominent
+ * treatment so the eye lands on the highest-signal threads first. */
+.mm-topic-thread-featured {
+  padding: 18px 20px;
+  background: var(--mm-bone);
+  border-left: 3px solid var(--mm-clay);
+}
+
+.mm-topic-thread-featured .mm-topic-thread-name {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.mm-topic-thread-featured .mm-topic-thread-desc {
+  font-size: 14px;
+  color: var(--mm-ink);
+}
+
+/* Highlights — numbered, scannable key takeaways. Replaces the
+ * old TL;DR bullets with something that reads as a curated list. */
+.mm-highlight-list {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.mm-highlight-list li {
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  gap: 12px;
+  align-items: baseline;
+  padding: 4px 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--mm-ink);
+}
+
+.mm-highlight-num {
+  font-family: var(--mm-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--mm-clay);
+  font-weight: 600;
+}
+
+/* Discussion — long-form narrative prose section. Brought out from
+ * behind the old "read more" expander so the full summary reads first. */
+.mm-discussion {
+  margin: 8px 0 0;
+  display: grid;
+  gap: 12px;
+}
+
+.mm-discussion p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--mm-ink);
+}
+
+/* Quality audit — collapsed by default. Confidence + speaker review +
+ * speaker list live here so they don't dilute the main reading surface. */
+.mm-audit {
+  margin: 36px 0 0;
+  padding: 14px 18px;
+  border: 1px dashed var(--mm-rule);
+  border-radius: var(--mm-radius);
+  background: transparent;
+}
+
+.mm-audit > summary {
+  cursor: pointer;
+  font-family: var(--mm-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--mm-ink-3);
+  list-style: none;
+  outline: none;
+}
+
+.mm-audit > summary::-webkit-details-marker {
+  display: none;
+}
+
+.mm-audit > summary::before {
+  content: "▸ ";
+  display: inline-block;
+  transform: translateY(-1px);
+  transition: transform var(--mm-dur-fast);
+}
+
+.mm-audit[open] > summary::before {
+  transform: translateY(-1px) rotate(90deg);
+}
+
+.mm-audit-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 24px;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--mm-rule);
+}
+
+/* Minutes view — fixed-width name column + monospaced timestamps so rows
+ * align regardless of how long any one speaker's name is. */
+.mm-minutes-list {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.mm-minutes-row {
+  display: grid;
+  grid-template-columns: 56px 140px 1fr;
+  gap: 12px;
+  align-items: baseline;
+  line-height: 1.55;
+}
+
+.mm-minutes-ts {
+  font-family: var(--mm-font-mono);
+  font-size: 11px;
+  color: var(--mm-ink-3);
+  letter-spacing: 0.04em;
+  text-align: right;
+}
+
+.mm-minutes-speaker {
+  display: inline-flex;
+  align-items: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mm-minutes-text {
+  font-size: 13.5px;
+  color: var(--mm-ink-2);
+}
+
+/* Onboarding modal — first-launch identity flow. */
+.mm-modal-onboarding {
+  max-width: 560px;
+}
+
+.mm-onboard-suggestion {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px 14px;
+  margin-top: 10px;
+  background: var(--mm-bone-2);
+  border-radius: 8px;
+  border: 1px solid var(--mm-rule);
+  font-size: 13px;
+}
+
+.mm-onboard-people {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 8px;
+  max-height: 240px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.mm-onboard-person {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  background: var(--mm-bone-2);
+  border: 1px solid var(--mm-rule);
+  border-radius: 8px;
+  cursor: pointer;
+  color: var(--mm-ink);
+  font-family: var(--mm-font-body);
+  text-align: left;
+  transition: border-color var(--mm-dur-fast), background-color var(--mm-dur-fast);
+}
+
+.mm-onboard-person:hover {
+  border-color: var(--mm-ink-3);
+}
+
+.mm-onboard-person.is-picked {
+  border-color: var(--mm-clay);
+  background: rgba(200, 255, 91, 0.06);
+}
+
+/* Sidebar identity chip — replaces the persistent owner banner. */
+.mm-sidebar-identity {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 12px;
+  padding: 8px 12px;
+  background: transparent;
+  border: 1px solid var(--mm-rule);
+  border-radius: 8px;
+  color: var(--mm-ink-2);
+  font-family: var(--mm-font-body);
+  font-size: 12px;
+  cursor: pointer;
+  transition: border-color var(--mm-dur-fast), color var(--mm-dur-fast);
+}
+
+.mm-sidebar-identity:hover {
+  border-color: var(--mm-clay);
+  color: var(--mm-ink);
+}
+
+/* ── Extract progress strip ──────────────────────────────────────────────── */
+
+.mm-extract-progress {
+  background: var(--mm-bone-2);
+  border: 1px solid var(--mm-rule);
+  border-radius: var(--mm-radius);
+  padding: 12px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0 56px 18px;
+}
+
+.mm-extract-progress-bar {
+  height: 3px;
+  background: var(--mm-bone-3);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.mm-extract-progress-bar i {
+  display: block;
+  height: 100%;
+  background: var(--mm-clay);
+  transition: width var(--mm-dur-base);
+}
+
+/* ── Owner identity highlight ────────────────────────────────────────────── */
+
+.mm-notice-owner {
+  border-left-color: var(--mm-sage);
+}
+
+[data-mm-mode="night"] .mm-notice-owner {
+  background: linear-gradient(90deg, rgba(140, 102, 232, 0.12), var(--mm-bone-2));
+}
+
+.mm-pill-yours {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--mm-clay-soft);
+  color: var(--mm-clay);
+  border-radius: 999px;
+  padding: 1px 8px;
+  font-family: var(--mm-font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-right: 6px;
+}
+
+[data-mm-mode="day"] .mm-pill-yours {
+  color: var(--mm-clay-2);
+}
+
+.mm-action-yours {
+  background: rgba(200, 255, 91, 0.08);
+  padding: 6px 8px;
+  margin: -6px -8px;
+  border-radius: 6px;
+  border-left: 2px solid var(--mm-clay);
+}
+
+[data-mm-mode="day"] .mm-action-yours {
+  background: var(--mm-clay-soft);
+}
+
+.mm-action-yours-row {
+  background: rgba(200, 255, 91, 0.08);
+  border-left: 2px solid var(--mm-clay);
+  padding: 8px 12px !important;
+  border-radius: 6px;
+}
+
+[data-mm-mode="day"] .mm-action-yours-row {
+  background: var(--mm-clay-soft);
+}
+
+.mm-foryou-stat {
+  background: linear-gradient(180deg, rgba(176, 140, 255, 0.14), var(--mm-bone));
+  border-color: var(--mm-sage);
+}
+
+[data-mm-mode="day"] .mm-foryou-stat {
+  background: linear-gradient(180deg, var(--mm-sage-soft), var(--mm-bone));
+}
+
+.mm-foryou-stat .mm-stat-value {
+  color: var(--mm-sage);
+}
+
+[data-mm-mode="day"] .mm-foryou-stat .mm-stat-value {
+  color: var(--mm-sage-2);
+}
+
+.mm-foryou-label {
+  color: var(--mm-sage);
+  font-weight: 600;
+}
+
+[data-mm-mode="day"] .mm-foryou-label {
+  color: var(--mm-sage-2);
+}
+
+.mm-people-card.is-you {
+  border-color: var(--mm-sage);
+  background: rgba(176, 140, 255, 0.08);
+}
+
+[data-mm-mode="day"] .mm-people-card.is-you {
+  background: var(--mm-sage-soft);
+}
+
+.mm-owner-card {
+  background: var(--mm-bone-2);
+  border: 1px solid var(--mm-rule);
+  border-left: 3px solid var(--mm-sage);
+  border-radius: var(--mm-radius);
+  padding: 14px 18px;
+}
+
+/* Owner-mention highlight (transcript) — violet halo, distinct from
+   chartreuse key-term marks. */
+.mm-tx-row p mark.mm-mark-owner,
+mark.mm-mark-owner {
+  background: rgba(176, 140, 255, 0.22);
+  color: var(--mm-sage);
+  padding: 0 5px;
+  border-radius: 4px;
+  font-weight: 600;
+  box-shadow: 0 0 0 1px rgba(176, 140, 255, 0.35);
+}
+
+[data-mm-mode="day"] .mm-tx-row p mark.mm-mark-owner,
+[data-mm-mode="day"] mark.mm-mark-owner {
+  background: var(--mm-sage-soft);
+  color: var(--mm-sage-2);
+}
+
+/* ── Threaded comments + resolved state ──────────────────────────────────── */
+
+.mm-comment-thread {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px;
+  border: 1px solid var(--mm-rule-soft);
+  border-radius: var(--mm-radius);
+  background: var(--mm-bone-2);
+}
+
+.mm-comment-thread.is-resolved {
+  opacity: 0.7;
+}
+
+.mm-comment.is-resolved {
+  background: var(--mm-bone-3);
+}
+
+.mm-comment-reply {
+  padding-left: 22px;
+  border-left: 1px dotted var(--mm-rule);
+  margin-left: 6px;
+}
+
+/* ── Word-level diff in edit history ─────────────────────────────────────── */
+
+.mm-diff-add {
+  background: rgba(200, 255, 91, 0.22);
+  color: var(--mm-clay);
+  border-radius: 3px;
+  padding: 0 2px;
+}
+
+[data-mm-mode="day"] .mm-diff-add {
+  background: var(--mm-clay-soft);
+  color: var(--mm-clay-2);
+}
+
+.mm-diff-del {
+  text-decoration: line-through;
+  background: rgba(255, 122, 184, 0.18);
+  color: var(--mm-berry);
+  border-radius: 3px;
+  padding: 0 2px;
+}
+
+/* ── Interactive waveform ─────────────────────────────────────────────────── */
+
+.mm-waveform {
+  position: relative;
+}
+
+.mm-waveform-hover {
+  position: absolute;
+  bottom: 100%;
+  transform: translateX(-50%);
+  background: var(--mm-bone);
+  border: 1px solid var(--mm-rule);
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-family: var(--mm-font-mono);
+  font-size: 10px;
+  color: var(--mm-ink-2);
+  pointer-events: none;
+  margin-bottom: 4px;
+  white-space: nowrap;
+}
+
+.mm-meeting-card-pills {
+  display: flex;
+  gap: 6px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.mm-meeting-card-pills .mm-pill {
+  font-size: 11px;
+  padding: 2px 9px;
+}
+
+.mm-speaker-stack {
+  display: flex;
+  margin-top: 14px;
+}
+
+.mm-speaker-stack > * + * {
+  margin-left: -6px;
+}
+
+.mm-review-detail {
+  flex: 1;
+  min-width: 0;
+  overflow-y: auto;
+  padding: 40px 48px 80px;
+}
+
+/* ── Review header / hero ────────────────────────────────────────────────── */
+
+.mm-review-hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.mm-review-hero h1 {
+  font-family: var(--mm-font-display);
+  font-weight: 400;
+  letter-spacing: var(--mm-tracking-tight);
+  line-height: 0.98;
+  font-size: 52px;
+  margin: 14px 0 0;
+  max-width: 760px;
+  /* Long underscore-separated slugs would otherwise overflow the
+   * hero column on narrow viewports. Allow breaks anywhere when no
+   * natural break point exists. */
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.mm-review-hero .mm-meta-row {
+  display: flex;
+  gap: 18px;
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--mm-ink-3);
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.mm-review-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+  align-content: start;
+  flex-shrink: 0;
+  max-width: 360px;
+}
+
+/* ── 4-cell meta strip ───────────────────────────────────────────────────── */
+
+.mm-meta-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  margin-top: 6px;
+}
+
+/* One-line meta strip used on the Review hero when an executive recap
+ * is present. Replaces the 4-tile counts row — counts are noise once
+ * the recap names what the actions and topics actually ARE. Wraps
+ * cleanly on narrow viewports because it's just inline spans. */
+.mm-meta-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px;
+  margin-top: 14px;
+  font-size: 13px;
+  color: var(--mm-ink-3);
+  line-height: 1.5;
+}
+
+.mm-meta-sep {
+  color: var(--mm-rule);
+}
+
+/* Slim variant used on the Review hero. Conducted + Duration + Actions +
+ * Topics — four small dossier fields. Source filename moved into the
+ * Quality Audit panel for power users only. */
+/* Even-width 4-up grid so cells line up regardless of content length;
+ * each cell breathes with consistent 28px gutters on both sides of the
+ * divider rule. */
+.mm-meta-strip-slim {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+}
+
+.mm-meta-strip > div {
+  position: relative;
+  padding: 28px 32px;
+  min-width: 0;
+  /* Soft tinted clay wash, tinted by the live --mm-clay so it adapts
+   * to day vs night. Subtle — the value text still does the talking. */
+  background: color-mix(in srgb, var(--mm-clay) 5%, transparent);
+  transition: background 200ms ease;
+}
+
+.mm-meta-strip > div:hover {
+  background: color-mix(in srgb, var(--mm-clay) 10%, transparent);
+}
+
+/* Inner hairline divider between cells — a short rule that sits in the
+ * vertical center of each gap, not floor-to-ceiling. Reads as
+ * separation without competing with the clay accent at the top. */
+.mm-meta-strip > div + div::after {
+  content: "";
+  position: absolute;
+  top: 28%;
+  bottom: 28%;
+  left: 0;
+  width: 1px;
+  background: var(--mm-rule);
+}
+
+/* Clay accent — aligned to the left padding of the cell so it sits
+ * right above the label, not floating against the divider. */
+.mm-meta-strip > div::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 32px;
+  width: 28px;
+  height: 2px;
+  background: var(--mm-clay);
+  border-radius: 0 0 2px 2px;
+}
+
+.mm-meta-strip .mm-lbl {
+  color: var(--mm-clay-2);
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+
+[data-mm-mode="night"] .mm-meta-strip .mm-lbl {
+  color: var(--mm-clay);
+}
+
+.mm-meta-strip .mm-meta-val {
+  font-family: var(--mm-font-display);
+  font-size: 24px;
+  letter-spacing: var(--mm-tracking-snug);
+  font-weight: 400;
+  margin-top: 10px;
+  line-height: 1.1;
+  color: var(--mm-ink);
+}
+
+.mm-meta-strip .mm-meta-sub {
+  font-size: 11.5px;
+  color: var(--mm-ink-2);
+  margin-top: 6px;
+  font-weight: 500;
+}
+
+@media (max-width: 900px) {
+  .mm-meta-strip,
+  .mm-meta-strip-slim {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  /* On the 2-column wrap, the second cell on each row is the rightmost,
+   * so it shouldn't draw a divider; the original-last cell rule already
+   * handles the very last item. */
+  .mm-meta-strip > div:nth-child(2n) {
+    border-right: none;
+    padding-right: 0;
+  }
+  .mm-meta-strip > div:nth-child(2n + 1) {
+    padding-left: 0;
+  }
+}
+
+/* ── Tabs ────────────────────────────────────────────────────────────────── */
+
+.mm-tabs {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid var(--mm-rule);
+  margin: 26px 0 22px;
+}
+
+.mm-tab {
+  background: transparent;
+  border: none;
+  padding: 12px 18px;
+  font-family: var(--mm-font-body);
+  font-size: 14px;
+  color: var(--mm-ink-3);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: color var(--mm-dur-fast), border-color var(--mm-dur-fast);
+  margin-bottom: -1px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mm-tab:hover {
+  color: var(--mm-ink-2);
+}
+
+.mm-tab.is-active {
+  color: var(--mm-ink);
+  border-bottom-color: var(--mm-clay);
+  font-weight: 500;
+}
+
+[data-mm-mode="night"] .mm-tab.is-active {
+  text-shadow: 0 0 8px rgba(200, 255, 91, 0.18);
+}
+
+/* ── 180 | 1fr section layout ────────────────────────────────────────────── */
+
+.mm-numbered-section {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 36px;
+  margin-top: 6px;
+}
+
+@media (max-width: 900px) {
+  .mm-numbered-section {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+.mm-numbered-section .mm-bignum {
+  font-family: var(--mm-font-display);
+  font-weight: 400;
+  font-size: 54px;
+  margin-top: 10px;
+  line-height: 1;
+  color: var(--mm-ink);
+}
+
+.mm-numbered-section .mm-bignum.is-clay {
+  color: var(--mm-sage-2);
+}
+
+[data-mm-mode="night"] .mm-numbered-section .mm-bignum.is-clay {
+  color: var(--mm-clay);
+}
+
+/* ── Voice cards (grid of speaker avatars) ───────────────────────────────── */
+
+.mm-voice-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 14px;
+}
+
+.mm-voice-card {
+  background: var(--mm-bone-2);
+  border: 1px solid var(--mm-rule);
+  border-radius: var(--mm-radius);
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.mm-voice-card .mm-voice-name {
+  font-family: var(--mm-font-display);
+  font-weight: 400;
+  font-size: 17px;
+  letter-spacing: var(--mm-tracking-snug);
+  color: var(--mm-ink);
+  line-height: 1.1;
+}
+
+/* ── Topic / workstream list (2-col grid) ────────────────────────────────── */
+
+.mm-topic-grid {
+  columns: 2;
+  column-gap: 36px;
+}
+
+@media (max-width: 800px) {
+  .mm-topic-grid {
+    columns: 1;
+  }
+}
+
+.mm-topic-row {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 10px;
+  margin-bottom: 14px;
+  break-inside: avoid;
+  align-items: baseline;
+}
+
+.mm-topic-row .mm-topic-index {
+  font-family: var(--mm-font-mono);
+  font-size: 11px;
+  color: var(--mm-ink-3);
+}
+
+.mm-topic-row .mm-topic-name {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.mm-topic-row .mm-topic-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.mm-topic-row .mm-topic-bar .mm-mono {
+  font-size: 10px;
+  color: var(--mm-ink-3);
+  min-width: 32px;
+  text-align: right;
+}
+
+/* ── Mind-map summary tiles (structured layout) ─────────────────────────────── */
+
+.mm-mindmap {
+  background: linear-gradient(180deg, var(--mm-bone-2), var(--mm-bone));
+  border: 1px solid var(--mm-rule);
+  border-radius: var(--mm-radius-lg);
+  padding: 32px 36px;
+  margin-top: 8px;
+}
+
+[data-mm-mode="night"] .mm-mindmap {
+  background: linear-gradient(180deg, rgba(140, 102, 232, 0.06), var(--mm-bone-2));
+}
+
+.mm-mindmap-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 22px;
+  flex-wrap: wrap;
+}
+
+.mm-mindmap-title {
+  font-family: var(--mm-font-display);
+  font-weight: 400;
+  font-size: 28px;
+  letter-spacing: var(--mm-tracking-tight);
+  line-height: 1.1;
+  margin: 8px 0 0;
+}
+
+.mm-hero-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  margin: 4px 0 22px;
+  border-top: 1px solid var(--mm-rule);
+  border-bottom: 1px solid var(--mm-rule);
+}
+
+/* "For You" lead section — owner-aware filter that surfaces what the
+ * configured owner specifically needs from this meeting. Sits at the
+ * very top of the Mind Map under the hero strip; hidden entirely when
+ * there's no owner or nothing relevant to surface. Accent-tinted left
+ * border to mark it as "yours" without being a full call-out card. */
+.mm-for-you {
+  margin: 0 0 24px;
+  padding: 16px 18px;
+  background: var(--mm-accent-tint, var(--mm-bone-2));
+  border-left: 3px solid var(--mm-accent, var(--mm-ink-2));
+  border-radius: 6px;
+}
+
+.mm-for-you-heading {
+  margin: 0 0 4px;
+  font-family: var(--mm-font-body);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  color: var(--mm-ink);
+}
+
+.mm-for-you-sub {
+  margin: 0 0 12px;
+  font-size: 12.5px;
+  color: var(--mm-ink-3);
+  line-height: 1.5;
+}
+
+.mm-for-you-block {
+  margin-top: 10px;
+}
+
+.mm-for-you-label {
+  font-family: var(--mm-font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.05em;
+  text-transform: lowercase;
+  color: var(--mm-ink-3);
+  margin-bottom: 4px;
+}
+
+.mm-for-you-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mm-for-you-list li {
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--mm-ink);
+  position: relative;
+  padding-left: 14px;
+}
+
+.mm-for-you-list li::before {
+  content: "·";
+  position: absolute;
+  left: 4px;
+  top: -2px;
+  font-size: 18px;
+  color: var(--mm-accent, var(--mm-ink-3));
+}
+
+.mm-for-you-oq-status {
+  font-family: var(--mm-font-mono);
+  font-size: 10.5px;
+  color: var(--mm-ink-3);
+  text-transform: lowercase;
+}
+
+.mm-for-you-jump {
+  margin-left: 8px;
+  padding: 1px 8px;
+  border: 1px solid var(--mm-rule);
+  border-radius: 10px;
+  background: transparent;
+  font-family: var(--mm-font-mono);
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  color: var(--mm-ink-3);
+  cursor: pointer;
+}
+
+.mm-for-you-jump:hover {
+  background: var(--mm-bone-3, var(--mm-bone-2));
+  color: var(--mm-ink);
+}
+
+/* Meeting Health chips — deterministic team-level signals (participation,
+ * decision density, unresolved questions, action clarity) computed by
+ * meeting_health.py. Sits just under the hero strip. Calibrated subdued
+ * so it informs without dominating; only "dominated" and "low" lean into
+ * a warning hue, everything else stays neutral. */
+.mm-health-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: -8px 0 22px;
+}
+
+.mm-health-chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 5px 12px;
+  border-radius: 14px;
+  background: var(--mm-bone-2);
+  border: 1px solid var(--mm-rule);
+  font-size: 12px;
+  line-height: 1.4;
+  cursor: help;
+}
+
+.mm-health-chip-label {
+  font-family: var(--mm-font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.05em;
+  text-transform: lowercase;
+  color: var(--mm-ink-3);
+}
+
+.mm-health-chip-value {
+  font-weight: 500;
+  color: var(--mm-ink);
+}
+
+/* Tone variants. "balanced", "high" on density/clarity, and "neutral" use
+ * the default palette. "skewed" / "moderate" get a slightly heavier
+ * background. "dominated" / "low" pick up the clay warning tint. */
+.mm-health-chip-skewed,
+.mm-health-chip-moderate {
+  background: var(--mm-bone-3, var(--mm-bone-2));
+}
+
+.mm-health-chip-dominated,
+.mm-health-chip-low {
+  background: var(--mm-clay-tint, var(--mm-bone-2));
+  border-color: var(--mm-clay, var(--mm-rule));
+}
+
+.mm-health-chip-dominated .mm-health-chip-value,
+.mm-health-chip-low .mm-health-chip-value {
+  color: var(--mm-clay, var(--mm-ink));
+}
+
+/* CoG chip — heavier visual treatment than the other health chips so
+ * the "non-obvious" CoG flip reads at a glance. Larger, accent-tinted
+ * background, the standout-speaker name renders in the speaker's
+ * own palette color via .mm-spk-mention. */
+.mm-health-chip-cog {
+  padding: 7px 14px 7px 10px;
+  background: var(--mm-accent-tint, var(--mm-bone-3));
+  border: 1px solid var(--mm-accent, var(--mm-rule));
+  font-size: 12.5px;
+  font-weight: 500;
+  position: relative;
+}
+
+.mm-health-chip-cog::before {
+  content: "★";
+  display: inline-block;
+  margin-right: 6px;
+  color: var(--mm-accent, var(--mm-ink-2));
+  font-size: 13px;
+}
+
+.mm-health-chip-cog .mm-health-chip-label {
+  color: var(--mm-ink-2, var(--mm-ink));
+}
+
+/* Inline speaker-color name highlight inside flowing prose. Earlier
+ * iteration used filled pills (background + padding) and was visually
+ * overwhelming in paragraphs with three or four name references — every
+ * sentence shouted. Calibrated way down: no background, no pill, the
+ * name reads as regular text with a 2px colored underline carrying the
+ * speaker identity. Distinguishable but doesn't compete with the
+ * sentence. */
+.mm-spk-mention {
+  display: inline;
+  font-weight: 500;
+  text-decoration: underline;
+  /* Underline uses the foreground palette color (--mm-spkc), not the
+   * pastel background swatch (--mm-spkbg) — the bg color failed WCAG
+   * non-text contrast (≥3:1) on several palette slots in light mode. */
+  text-decoration-color: var(--mm-spkc, var(--mm-ink-3));
+  text-decoration-thickness: 2px;
+  text-decoration-skip-ink: none;
+  text-underline-offset: 3px;
+  background: none;
+  padding: 0;
+  color: inherit;
+}
+
+/* Override in contexts where a STANDALONE chip is the right
+ * treatment — the CoG "driven by" name and the driver-row speaker
+ * label sit on their own and read better as filled chips than as
+ * underlined text. */
+.mm-health-chip-cog .mm-spk-mention,
+.mm-driver-speaker.mm-spk-mention {
+  padding: 1px 8px;
+  border-radius: 10px;
+  background: var(--mm-spkbg, var(--mm-bone-3));
+  color: var(--mm-spkc, var(--mm-ink));
+  text-decoration: none;
+}
+
+/* "What drove this meeting" panel — sits between the chip strip and
+ * the stat callouts on the Mind Map. Each driver row is a clickable
+ * button that scrolls the transcript to the cited segment. */
+.mm-drivers-panel {
+  margin: 0 0 22px;
+  padding: 14px 16px 12px;
+  background: var(--mm-bone-2);
+  border: 1px solid var(--mm-rule);
+  border-radius: 8px;
+}
+
+.mm-drivers-heading {
+  font-family: var(--mm-font-body);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mm-ink-3);
+  margin: 0 0 10px;
+  font-weight: 600;
+}
+
+.mm-drivers-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.mm-driver-row {
+  display: block;
+}
+
+/* Button wrapper for the clickable row. Inherits visual weight from the
+ * confidence variant — low-confidence rows are dimmed so they read as
+ * "maybe" rather than fact. */
+.mm-driver-button {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2px;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: none;
+  padding: 8px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  transition: background 0.12s ease;
+}
+
+.mm-driver-button:hover {
+  background: var(--mm-bone-3, var(--mm-bone-2));
+}
+
+.mm-driver-button:focus-visible {
+  outline: 2px solid var(--mm-accent, var(--mm-ink-3));
+  outline-offset: 1px;
+}
+
+.mm-driver-kind {
+  font-family: var(--mm-font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.05em;
+  text-transform: lowercase;
+  color: var(--mm-ink-3);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* "AI" badge on LLM-judged drivers — small, neutral, hover-explained.
+ * Calibrated subdued so deterministic moments remain the visual default
+ * and LLM moments are clearly distinguishable but not loud. */
+.mm-driver-source-badge {
+  display: inline-block;
+  padding: 1px 5px;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-radius: 3px;
+  background: var(--mm-bone-3, var(--mm-bone-2));
+  color: var(--mm-ink-3);
+  border: 1px solid var(--mm-rule);
+  cursor: help;
+}
+
+.mm-driver-description {
+  font-size: 13.5px;
+  line-height: 1.45;
+  color: var(--mm-ink);
+}
+
+.mm-driver-meta {
+  font-size: 11.5px;
+  color: var(--mm-ink-3);
+  margin-top: 2px;
+}
+
+.mm-driver-speaker {
+  font-weight: 500;
+}
+
+.mm-driver-speaker-unconfirmed {
+  font-style: italic;
+  color: var(--mm-clay, var(--mm-ink-3));
+  cursor: help;
+}
+
+.mm-driver-impact {
+  font-family: var(--mm-font-mono);
+  font-size: 11px;
+}
+
+/* Confidence variants: medium is the default visual; high gets a subtle
+ * accent left border; low fades. */
+.mm-driver-row-high {
+  border-left: 2px solid var(--mm-accent, var(--mm-ink-2, var(--mm-ink)));
+  padding-left: 6px;
+}
+
+.mm-driver-row-low {
+  opacity: 0.75;
+}
+
+.mm-hero-metric {
+  padding: 18px 18px 18px 0;
+  border-right: 1px solid var(--mm-rule);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.mm-hero-metric:last-child {
+  border-right: none;
+}
+
+.mm-hero-metric + .mm-hero-metric {
+  padding-left: 18px;
+}
+
+.mm-hero-value {
+  font-family: var(--mm-font-display);
+  font-weight: 400;
+  font-size: 44px;
+  letter-spacing: var(--mm-tracking-tight);
+  line-height: 1;
+  color: var(--mm-clay);
+}
+
+[data-mm-mode="day"] .mm-hero-value {
+  color: var(--mm-clay-2);
+}
+
+.mm-hero-unit {
+  font-family: var(--mm-font-body);
+  font-size: 14px;
+  color: var(--mm-ink-3);
+  margin-left: 4px;
+  letter-spacing: 0;
+}
+
+@media (max-width: 900px) {
+  .mm-hero-strip {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .mm-hero-metric:nth-child(2) {
+    border-right: none;
+  }
+}
+
+.mm-mindmap-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 900px) {
+  .mm-mindmap-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.mm-mindmap-tile {
+  background: var(--mm-bone);
+  border: 1px solid var(--mm-rule);
+  border-radius: var(--mm-radius);
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.mm-mindmap-tile h4 {
+  font-family: var(--mm-font-body);
+  font-weight: 600;
+  font-size: 14px;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--mm-ink);
+}
+
+.mm-mindmap-tile h4 .mm-tile-glyph {
+  color: var(--mm-clay);
+  font-family: var(--mm-font-mono);
+  font-size: 14px;
+}
+
+.mm-mindmap-tile p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--mm-ink-2);
+}
+
+.mm-mindmap-tile ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--mm-ink-2);
+}
+
+.mm-mindmap-tile li::before {
+  content: "·";
+  margin-right: 6px;
+  color: var(--mm-clay);
+}
+
+.mm-mindmap-tile .mm-pull {
+  font-family: var(--mm-font-display);
+  font-style: italic;
+  font-size: 14px;
+  color: var(--mm-ink-2);
+  border-left: 2px solid var(--mm-clay);
+  padding-left: 10px;
+  margin-top: auto;
+}
+
+.mm-mindmap-stat {
+  background: var(--mm-bone);
+  border: 1px solid var(--mm-rule);
+  border-radius: var(--mm-radius);
+  padding: 22px;
+  text-align: center;
+}
+
+.mm-mindmap-stat .mm-lbl {
+  margin-bottom: 8px;
+}
+
+.mm-mindmap-stat .mm-stat-value {
+  font-family: var(--mm-font-display);
+  font-size: 48px;
+  font-weight: 400;
+  letter-spacing: var(--mm-tracking-tight);
+  line-height: 1;
+  color: var(--mm-clay);
+}
+
+.mm-mindmap-stat .mm-stat-sub {
+  font-size: 12px;
+  color: var(--mm-ink-3);
+  margin-top: 6px;
+}
+
+/* ── Minutes / structured-prose view (structured layout) ────────────────────── */
+
+.mm-minutes {
+  max-width: 760px;
+}
+
+.mm-minutes h2 {
+  font-family: var(--mm-font-display);
+  font-weight: 400;
+  letter-spacing: var(--mm-tracking-tight);
+  font-size: 28px;
+  margin: 32px 0 14px;
+  color: var(--mm-ink);
+}
+
+.mm-minutes h2:first-child {
+  margin-top: 0;
+}
+
+.mm-minutes p,
+.mm-minutes li {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--mm-ink-2);
+  margin: 0 0 12px;
+}
+
+.mm-minutes ul {
+  margin: 0 0 18px;
+  padding-left: 0;
+  list-style: none;
+}
+
+.mm-minutes ul li {
+  padding-left: 16px;
+  position: relative;
+}
+
+.mm-minutes ul li::before {
+  content: "·";
+  position: absolute;
+  left: 0;
+  color: var(--mm-clay);
+  font-weight: 700;
+}
+
+.mm-minutes .mm-minutes-mention {
+  color: var(--mm-clay);
+  font-weight: 500;
+}
+
+[data-mm-mode="day"] .mm-minutes .mm-minutes-mention {
+  color: var(--mm-clay-2);
+}
+
+.mm-minutes .mm-ts {
+  font-family: var(--mm-font-mono);
+  font-size: 12px;
+  color: var(--mm-ink-3);
+  margin-right: 8px;
+}
+
+/* ── Chapter index (right rail on transcript view) ───────────────────────── */
+
+.mm-transcript-layout {
+  display: grid;
+  grid-template-columns: 1fr 260px;
+  gap: 32px;
+  align-items: start;
+}
+
+@media (max-width: 1100px) {
+  .mm-transcript-layout {
+    grid-template-columns: 1fr;
+  }
+  .mm-chapter-rail {
+    display: none;
+  }
+}
+
+.mm-chapter-rail {
+  position: sticky;
+  top: 24px;
+  max-height: calc(100vh - 60px);
+  overflow-y: auto;
+  border-left: 1px solid var(--mm-rule);
+  padding-left: 22px;
+}
+
+.mm-chapter-list {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0;
+}
+
+.mm-chapter-list li {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: 10px;
+  padding: 8px 0;
+  font-size: 12px;
+  color: var(--mm-ink-2);
+  cursor: pointer;
+  border-radius: 6px;
+  transition: color var(--mm-dur-fast);
+}
+
+.mm-chapter-list li:hover {
+  color: var(--mm-ink);
+}
+
+.mm-chapter-list li.is-active {
+  color: var(--mm-clay);
+}
+
+.mm-chapter-list .mm-ts {
+  font-family: var(--mm-font-mono);
+  font-size: 11px;
+  color: var(--mm-ink-3);
+  margin: 0;
+}
+
+.mm-chapter-list li.is-active .mm-ts {
+  color: var(--mm-clay);
+}
+
+/* ── Audio scrubber bar ──────────────────────────────────────────────────── */
+
+.mm-scrub {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  gap: 14px;
+  align-items: center;
+  background: var(--mm-bone-2);
+  border: 1px solid var(--mm-rule);
+  border-radius: var(--mm-radius);
+  padding: 12px 18px;
+  margin-bottom: 18px;
+}
+
+.mm-scrub-time {
+  font-family: var(--mm-font-mono);
+  font-size: 12px;
+  color: var(--mm-ink-3);
+  min-width: 96px;
+}
+
+.mm-scrub-bar {
+  position: relative;
+  height: 6px;
+  background: var(--mm-bone-3);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.mm-scrub-bar-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: var(--mm-clay);
+  border-radius: 999px;
+}
+
+.mm-scrub-tick {
+  position: absolute;
+  top: -3px;
+  bottom: -3px;
+  width: 2px;
+  background: var(--mm-ink-3);
+  border-radius: 1px;
+  pointer-events: auto;
+  cursor: help;
+  opacity: 0.65;
+}
+
+[data-mm-mode="night"] .mm-scrub-tick {
+  background: var(--mm-sage);
+  box-shadow: 0 0 4px rgba(176, 140, 255, 0.4);
+}
+
+[data-mm-mode="night"] .mm-scrub-bar-fill {
+  box-shadow: 0 0 12px rgba(200, 255, 91, 0.5);
+}
+
+.mm-scrub-rate {
+  font-family: var(--mm-font-mono);
+  font-size: 11px;
+  color: var(--mm-ink);
+  background: var(--mm-bone-2);
+  border: 1px solid var(--mm-rule);
+  border-radius: 999px;
+  padding: 4px 10px;
+  cursor: pointer;
+  appearance: none;
+}
+
+.mm-scrub-rate:hover,
+.mm-scrub-rate:focus {
+  border-color: var(--mm-clay);
+  outline: none;
+}
+
+.mm-scrub-controls {
+  display: flex;
+  gap: 6px;
+}
+
+.mm-icon-btn {
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--mm-bone);
+  border: 1px solid var(--mm-rule);
+  color: var(--mm-ink);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all var(--mm-dur-fast);
+}
+
+.mm-icon-btn:hover:not(:disabled) {
+  border-color: var(--mm-ink);
+}
+
+.mm-icon-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* ── Transcript rows ─────────────────────────────────────────────────────── */
+
+.mm-tx-row {
+  background: var(--mm-bone-2);
+  border: 1px solid var(--mm-rule);
+  border-radius: var(--mm-radius);
+  padding: 18px 22px;
+  margin-bottom: 14px;
+  position: relative;
+  transition: border-color var(--mm-dur-fast);
+}
+
+.mm-tx-row.is-active {
+  border-color: var(--mm-clay);
+}
+
+[data-mm-mode="night"] .mm-tx-row.is-active {
+  box-shadow: 0 0 0 1px var(--mm-clay), 0 0 24px rgba(200, 255, 91, 0.18);
+}
+
+.mm-tx-row.is-low::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 14px;
+  bottom: 14px;
+  width: 3px;
+  background: var(--mm-clay);
+  border-radius: 3px;
+}
+
+.mm-tx-meta {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.mm-tx-conf {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.mm-tx-conf .mm-confidence-bar {
+  width: 54px;
+  min-width: 0;
+  flex: none;
+}
+
+.mm-tx-conf .mm-mono {
+  font-size: 10px;
+  color: var(--mm-ink-3);
+}
+
+.mm-tx-actions {
+  margin-left: auto;
+  display: flex;
+  gap: 6px;
+}
+
+/* Action sub-groups inside .mm-tx-actions — separates edit/comment
+ * buttons from transport (play/seek) buttons with a thin divider. */
+.mm-tx-action-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.mm-tx-action-group + .mm-tx-action-group {
+  padding-left: 8px;
+  border-left: 1px solid var(--mm-rule);
+}
+
+.mm-tx-action-transport {
+  /* Reserved for tone-on-tone treatment if we ever color-code transport
+   * separately; today it inherits the group spacing. */
+}
+
+.mm-tx-row p {
+  font-size: 15px;
+  line-height: 1.6;
+  margin: 0;
+  max-width: 760px;
+  color: var(--mm-ink);
+}
+
+.mm-tx-row p mark {
+  background: rgba(200, 255, 91, 0.18);
+  color: var(--mm-clay);
+  padding: 0 4px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+[data-mm-mode="day"] .mm-tx-row p mark {
+  background: var(--mm-clay-soft);
+  color: var(--mm-clay-2);
+}
+
+.mm-tx-editor textarea {
+  width: 100%;
+  min-height: 120px;
+  background: var(--mm-bone);
+  color: var(--mm-ink);
+  border: 1px solid var(--mm-rule);
+  border-radius: var(--mm-radius);
+  padding: 12px 14px;
+  font-family: var(--mm-font-body);
+  font-size: 14px;
+  line-height: 1.55;
+  outline: none;
+  resize: vertical;
+}
+
+.mm-tx-editor {
+  display: grid;
+  gap: 8px;
+  padding: 12px 14px;
+  border: 1px solid var(--mm-rule);
+  border-radius: 10px;
+  background: var(--mm-bone);
+  margin-top: 8px;
+}
+
+.mm-tx-editor-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.mm-tx-error {
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--mm-berry);
+}
+
+/* ── Speaker modal ───────────────────────────────────────────────────────── */
+
+.mm-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(11, 16, 32, 0.55);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 80;
+  padding: 20px;
+}
+
+[data-mm-mode="day"] .mm-modal-backdrop {
+  background: rgba(26, 31, 28, 0.32);
+}
+
+.mm-modal {
+  width: 580px;
+  max-width: 100%;
+  background: var(--mm-bone-2);
+  border: 1px solid var(--mm-rule);
+  border-radius: 24px;
+  box-shadow: var(--mm-shadow-modal);
+  overflow: hidden;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.mm-modal-head {
+  padding: 24px 28px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.mm-modal-body {
+  padding: 8px 28px 24px;
+  overflow-y: auto;
+}
+
+.mm-modal-body h2 {
+  font-family: var(--mm-font-display);
+  font-weight: 400;
+  font-size: 36px;
+  letter-spacing: var(--mm-tracking-tight);
+  margin: 10px 0 6px;
+  line-height: 0.95;
+}
+
+.mm-modal-body .mm-modal-sub {
+  font-size: 13px;
+  color: var(--mm-ink-3);
+}
+
+.mm-modal-section {
+  padding: 20px 28px;
+  border-top: 1px solid var(--mm-rule);
+}
+
+.mm-modal-section h3 {
+  font-family: var(--mm-font-mono);
+  font-size: 11px;
+  letter-spacing: var(--mm-tracking-loud);
+  text-transform: uppercase;
+  color: var(--mm-ink);
+  font-weight: 500;
+  margin: 0 0 12px;
+}
+
+.mm-modal-name-row {
+  display: flex;
+  gap: 8px;
+}
+
+.mm-modal-name-row .mm-input {
+  flex: 1;
+}
+
+.mm-modal-choices {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.mm-modal-choice {
+  background: var(--mm-bone);
+  border: 1px solid var(--mm-rule);
+  border-radius: var(--mm-radius);
+  padding: 10px 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-align: left;
+  font-family: var(--mm-font-body);
+  color: var(--mm-ink);
+  transition: border-color var(--mm-dur-fast);
+}
+
+.mm-modal-choice:hover {
+  border-color: var(--mm-ink);
+}
+
+.mm-modal-choice .mm-choice-name {
+  flex: 1;
+  font-family: var(--mm-font-display);
+  font-size: 18px;
+  letter-spacing: var(--mm-tracking-snug);
+  text-align: right;
+}
+
+.mm-modal-foot {
+  padding: 14px 28px;
+  background: var(--mm-bone);
+  border-top: 1px solid var(--mm-rule);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  color: var(--mm-ink-3);
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.mm-modal-foot details {
+  font-size: 11px;
+}
+
+.mm-modal-foot summary {
+  cursor: pointer;
+  color: var(--mm-ink-2);
+  font-family: var(--mm-font-mono);
+  letter-spacing: var(--mm-tracking-loud);
+  text-transform: uppercase;
+  font-size: 11px;
+}
+
+.mm-modal-suggestion {
+  margin-top: 14px;
+  padding: 12px 14px;
+  background: var(--mm-bone);
+  border: 1px solid var(--mm-rule);
+  border-radius: var(--mm-radius);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mm-modal-suggestion .mm-suggestion-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.mm-modal-suggestion strong {
+  font-family: var(--mm-font-display);
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--mm-ink);
+}
+
+.mm-modal-suggestion p {
+  font-size: 12px;
+  color: var(--mm-ink-3);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.mm-modal-suggestion .mm-suggestion-evidence {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.mm-modal-suggestion .mm-suggestion-evidence span {
+  font-family: var(--mm-font-mono);
+  font-size: 11px;
+  background: var(--mm-bone-3);
+  padding: 2px 8px;
+  border-radius: 8px;
+  color: var(--mm-ink-2);
+}
+
+.mm-modal-suggestion-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  color: var(--mm-ink-3);
+}
+
+/* ── Workstreams ─────────────────────────────────────────────────────────── */
+
+.mm-ws-toolbar {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+
+.mm-ws-toolbar .mm-input {
+  max-width: 440px;
+}
+
+.mm-ws-sort {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin-left: auto;
+}
+
+.mm-ws-panel {
+  background: var(--mm-bone-2);
+  border: 1px solid var(--mm-rule);
+  border-radius: var(--mm-radius-lg);
+  overflow: hidden;
+}
+
+.mm-ws-panel-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--mm-rule);
+  gap: 12px;
+}
+
+.mm-ws-row {
+  display: grid;
+  grid-template-columns: 56px 1fr 220px 80px;
+  gap: 18px;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--mm-rule-soft);
+  align-items: center;
+}
+
+.mm-ws-row:last-child {
+  border-bottom: none;
+}
+
+@media (max-width: 900px) {
+  .mm-ws-row {
+    grid-template-columns: 46px 1fr;
+  }
+  .mm-ws-row .mm-ws-meetings,
+  .mm-ws-row .mm-ws-delete {
+    grid-column: span 2;
+  }
+}
+
+.mm-ws-ring {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mm-ws-ring > div {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--mm-bone);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mm-font-mono);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.mm-ws-name {
+  font-family: var(--mm-font-display);
+  font-size: 19px;
+  letter-spacing: var(--mm-tracking-snug);
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.mm-ws-meetings {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.mm-ws-meetings button {
+  background: var(--mm-bone);
+  border: 1px solid var(--mm-rule);
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-family: var(--mm-font-body);
+  font-size: 12px;
+  color: var(--mm-ink-2);
+  cursor: pointer;
+}
+
+.mm-ws-meetings button:hover {
+  border-color: var(--mm-ink);
+  color: var(--mm-ink);
+}
+
+/* ── Cross-meeting search results ────────────────────────────────────────── */
+
+.mm-search-results {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.mm-search-result {
+  background: var(--mm-bone-2);
+  border: 1px solid var(--mm-rule);
+  border-radius: var(--mm-radius);
+  padding: 14px 18px;
+  text-align: left;
+  cursor: pointer;
+  font-family: var(--mm-font-body);
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.mm-search-result:hover {
+  border-color: var(--mm-ink);
+}
+
+.mm-search-result .mm-search-kind {
+  font-family: var(--mm-font-mono);
+  font-size: 10px;
+  letter-spacing: var(--mm-tracking-label);
+  text-transform: uppercase;
+  color: var(--mm-ink-3);
+}
+
+.mm-search-result strong {
+  font-family: var(--mm-font-display);
+  font-weight: 400;
+  font-size: 18px;
+  letter-spacing: var(--mm-tracking-snug);
+}
+
+.mm-search-result p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--mm-ink-2);
+  line-height: 1.55;
+}
+
+/* ── Settings ────────────────────────────────────────────────────────────── */
+
+.mm-settings {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 1000px;
+}
+
+.mm-settings .mm-panel {
+  padding: 0;
+}
+
+.mm-settings-head {
+  padding: 20px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  border-bottom: 1px solid var(--mm-rule);
+}
+
+.mm-settings-head h2 {
+  font-family: var(--mm-font-display);
+  font-weight: 400;
+  font-size: 24px;
+  letter-spacing: var(--mm-tracking-snug);
+  margin: 0;
+}
+
+.mm-settings-head p {
+  font-size: 13px;
+  color: var(--mm-ink-3);
+  margin: 4px 0 0;
+  max-width: 540px;
+}
+
+.mm-settings-body {
+  padding: 22px 24px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px 24px;
+}
+
+@media (max-width: 800px) {
+  .mm-settings-body {
+    grid-template-columns: 1fr;
+  }
+}
+
+.mm-settings-body.is-single {
+  grid-template-columns: 1fr;
+}
+
+.mm-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--mm-ink-2);
+}
+
+.mm-field .mm-input,
+.mm-field select.mm-input,
+.mm-field textarea.mm-input {
+  margin-top: 4px;
+}
+
+.mm-field .mm-input,
+.mm-field select.mm-input,
+.mm-field textarea.mm-input {
+  /* Inputs in Settings panels would overflow their grid column when the
+   * column wasn't wide enough for the placeholder/value text. min-width:0
+   * lets the input collapse instead of forcing the cell wider. */
+  min-width: 0;
+  width: 100%;
+}
+
+.mm-field small {
+  font-size: 11px;
+  color: var(--mm-ink-3);
+  line-height: 1.5;
+  white-space: normal;
+  word-break: break-word;
+}
+
+.mm-toggle-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 0;
+  border-top: 1px solid var(--mm-rule-soft);
+  font-size: 13px;
+}
+
+.mm-toggle-row:first-child {
+  border-top: none;
+}
+
+.mm-toggle-row input[type="checkbox"] {
+  margin-top: 3px;
+  accent-color: var(--mm-clay);
+}
+
+.mm-toggle-row small {
+  display: block;
+  margin-top: 4px;
+  color: var(--mm-ink-3);
+  font-size: 11px;
+}
+
+.mm-settings-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  padding: 20px 24px 24px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.mm-settings-actions .mm-errors {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--mm-berry);
+}
+
+/* ── Audio-alternatives panel ────────────────────────────────────────────── */
+
+.mm-alt-panel {
+  background: var(--mm-bone-2);
+  border: 1px solid var(--mm-rule);
+  border-radius: var(--mm-radius);
+  padding: 14px 18px;
+  margin-bottom: 18px;
+}
+
+.mm-alt-panel summary {
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--mm-font-mono);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: var(--mm-tracking-label);
+  color: var(--mm-ink-2);
+}
+
+.mm-alt-panel summary span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mm-alt-body {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: 14px;
+  flex-wrap: wrap;
+}
+
+.mm-alt-body strong {
+  display: block;
+  font-family: var(--mm-font-display);
+  font-size: 20px;
+  font-weight: 400;
+  letter-spacing: var(--mm-tracking-snug);
+  margin-bottom: 4px;
+  color: var(--mm-ink);
+}
+
+.mm-alt-body p {
+  font-size: 13px;
+  color: var(--mm-ink-3);
+  margin: 0;
+  max-width: 520px;
+}
+
+.mm-candidate-card {
+  background: var(--mm-bone);
+  border: 1px solid var(--mm-rule);
+  border-radius: var(--mm-radius);
+  padding: 14px 18px;
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.mm-candidate-card.is-accepted {
+  border-color: var(--mm-clay);
+}
+
+.mm-candidate-card header {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.mm-candidate-card header strong {
+  font-family: var(--mm-font-display);
+  font-weight: 400;
+  font-size: 18px;
+  letter-spacing: var(--mm-tracking-snug);
+}
+
+.mm-candidate-change {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.mm-candidate-change-window {
+  background: var(--mm-bone-2);
+  border-radius: 8px;
+  padding: 4px 10px;
+  font-size: 12px;
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  align-items: center;
+}
+
+.mm-candidate-change-window em {
+  font-style: italic;
+  color: var(--mm-ink-3);
+}
+
+.mm-candidate-change-window mark {
+  background: transparent;
+  color: var(--mm-ink);
+  padding: 0 2px;
+}
+
+.mm-candidate-change-window mark.added {
+  background: rgba(200, 255, 91, 0.18);
+  color: var(--mm-clay);
+  border-radius: 4px;
+}
+
+.mm-candidate-change-window mark.removed {
+  text-decoration: line-through;
+  color: var(--mm-berry);
+}
+
+.mm-candidate-metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.mm-candidate-metrics span {
+  font-family: var(--mm-font-mono);
+  font-size: 11px;
+  background: var(--mm-bone-3);
+  color: var(--mm-ink-2);
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+/* ── Vault preview block ─────────────────────────────────────────────────── */
+
+.mm-vault-preview {
+  margin-top: 30px;
+}
+
+.mm-vault-preview summary {
+  cursor: pointer;
+  font-family: var(--mm-font-mono);
+  font-size: 11px;
+  letter-spacing: var(--mm-tracking-label);
+  text-transform: uppercase;
+  color: var(--mm-ink-2);
+  padding: 8px 0;
+}
+
+.mm-vault-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.mm-vault-card {
+  background: var(--mm-bone-2);
+  border: 1px solid var(--mm-rule);
+  border-radius: var(--mm-radius);
+  padding: 12px 14px;
+}
+
+.mm-vault-card span {
+  font-family: var(--mm-font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: var(--mm-tracking-label);
+  color: var(--mm-ink-3);
+}
+
+.mm-vault-card p {
+  margin: 6px 0 0;
+  font-size: 12px;
+  color: var(--mm-ink-2);
+  line-height: 1.55;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* ── Tiny helpers ────────────────────────────────────────────────────────── */
+
+.mm-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.mm-row-wrap {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.mm-spacer {
+  flex: 1;
+}
+
+.mm-stack-2 {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mm-stack-3 {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.mm-clay {
+  color: var(--mm-clay);
+}
+
+.mm-sage {
+  color: var(--mm-sage-2);
+}
+
+[data-mm-mode="night"] .mm-sage {
+  color: var(--mm-sage);
+}
+
+.mm-ink-3 {
+  color: var(--mm-ink-3);
+}
+
+/* Toast stack — floats top-right, auto-dismisses. Replaces the old
+ * persistent mm-notice banner that required a manual close. */
+.mm-toast-stack {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 360px;
+  pointer-events: none;
+}
+
+.mm-toast {
+  background: var(--mm-bone-2);
+  border: 1px solid var(--mm-rule);
+  border-left: 3px solid var(--mm-clay);
+  border-radius: 8px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--mm-ink);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+  pointer-events: auto;
+  animation: mm-toast-in 180ms ease-out;
+}
+
+.mm-toast.mm-toast-error {
+  border-left-color: var(--mm-rust);
+}
+
+.mm-toast-dismiss {
+  background: transparent;
+  border: none;
+  color: var(--mm-ink-3);
+  cursor: pointer;
+  padding: 0;
+  font-size: 14px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.mm-toast-dismiss:hover {
+  color: var(--mm-ink);
+}
+
+/* Clickable status pill — used for "Needs speaker review" so the user
+ * can jump from the call-to-action to the transcript. */
+.mm-pill-clickable {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  background: var(--mm-bone-2);
+  border: 1px solid var(--mm-rule);
+  border-radius: 999px;
+  font-family: var(--mm-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--mm-ink);
+  cursor: pointer;
+  transition: border-color var(--mm-dur-fast), background-color var(--mm-dur-fast);
+}
+
+.mm-pill-clickable:hover {
+  border-color: var(--mm-clay);
+  background: rgba(200, 255, 91, 0.08);
+}
+
+.mm-pill-clickable .mm-pill-dot {
+  color: var(--mm-clay);
+  font-size: 9px;
+}
+
+/* Model recommendations — stacked rows with chip + id on row 1 and a
+ * wrapped note on row 2. Replaces the previous one-line layout that
+ * overflowed when notes ran long. */
+.mm-model-recs {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 6px;
+  width: 100%;
+}
+
+.mm-model-rec {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  text-align: left !important;
+  padding: 10px 12px !important;
+  gap: 6px;
+  width: 100%;
+  min-width: 0;
+}
+
+.mm-model-rec-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+.mm-model-rec-head code {
+  font-family: var(--mm-font-mono);
+  font-size: 12px;
+  color: var(--mm-ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.mm-model-rec-note {
+  white-space: normal;
+  word-break: break-word;
+  line-height: 1.45;
+  opacity: 0.75;
+  font-size: 11px;
+}
+
+/* Defensive: Settings panels honour container width. Prevents long values
+ * from forcing horizontal scroll on the whole panel. */
+.mm-settings .mm-panel {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.mm-settings-body {
+  min-width: 0;
+}
+
+/* Inbox row gains a per-file template selector. Rows that don't have a
+ * template yet read as "needs attention" so the user can see which ones
+ * are blocking the Ingest button. */
+.mm-inbox-row {
+  display: grid;
+  grid-template-columns: 32px 1fr 200px 32px;
+  align-items: center;
+  gap: 12px;
+}
+
+.mm-inbox-row-body {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.mm-inbox-row-body > * {
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.mm-inbox-row.needs-template {
+  border-color: var(--mm-clay);
+  background: rgba(200, 255, 91, 0.04);
+}
+
+.mm-inbox-template {
+  min-width: 0;
+  max-width: 200px;
+}
+
+/* Ingest template modal — pops on upload to force a meeting-type pick. */
+.mm-modal-ingest {
+  max-width: 520px;
+}
+
+/* Confirm modal — themed replacement for window.confirm. */
+.mm-modal-confirm {
+  max-width: 460px;
+}
+
+/* Minutes view rebuilt as a per-attendee distillation list. Replaces
+ * the old transcript-grouped-by-chapter rendering that duplicated the
+ * Transcript tab. Each row is a speaker + a 1-2 sentence summary of
+ * their contribution to this meeting. */
+.mm-minutes-intro {
+  font-size: 13px;
+  color: var(--mm-ink-3);
+  margin: 8px 0 18px;
+  line-height: 1.55;
+  max-width: 680px;
+}
+
+.mm-attendee-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.mm-attendee-row {
+  background: var(--mm-bone-2);
+  border: 1px solid var(--mm-rule);
+  border-radius: 10px;
+  padding: 14px 18px;
+}
+
+.mm-attendee-row-you {
+  border-color: var(--mm-clay);
+  background: rgba(200, 255, 91, 0.05);
+}
+
+[data-mm-mode="day"] .mm-attendee-row-you {
+  background: var(--mm-clay-soft);
+}
+
+.mm-attendee-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.mm-attendee-name {
+  margin: 0;
+  font-family: var(--mm-font-display);
+  font-weight: 400;
+  font-size: 20px;
+  letter-spacing: -0.005em;
+  color: var(--mm-ink);
+}
+
+.mm-attendee-contribution {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--mm-ink-2);
+}
+
+/* Minutes toolbar — segmented control toggle + helper line. */
+.mm-minutes-toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.mm-minutes-toggle {
+  display: inline-flex;
+  align-self: flex-start;
+  background: var(--mm-bone-2);
+  border: 1px solid var(--mm-rule);
+  border-radius: 999px;
+  padding: 2px;
+  gap: 2px;
+}
+
+.mm-minutes-toggle-btn {
+  font-family: var(--mm-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  background: transparent;
+  border: none;
+  border-radius: 999px;
+  color: var(--mm-ink-3);
+  cursor: pointer;
+  transition: background-color var(--mm-dur-fast), color var(--mm-dur-fast);
+}
+
+.mm-minutes-toggle-btn.is-active {
+  background: var(--mm-bone);
+  color: var(--mm-ink);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.18);
+}
+
+[data-mm-mode="day"] .mm-minutes-toggle-btn.is-active {
+  background: var(--mm-clay-soft);
+  color: var(--mm-clay-2);
+  box-shadow: none;
+}
+
+/* Chronological minutes — `[ts] subhead + bullets` per chapter marker. */
+.mm-time-minutes {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.mm-time-chapter {
+  display: grid;
+  gap: 6px;
+}
+
+.mm-time-chapter-head {
+  font-family: var(--mm-font-body);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  color: var(--mm-ink);
+  margin: 0 0 10px;
+  line-height: 1.4;
+}
+
+.mm-time-chapter-head .mm-ts {
+  font-family: var(--mm-font-mono);
+  font-size: 11px;
+  color: var(--mm-ink-3);
+  font-weight: 400;
+  margin-right: 4px;
+}
+
+/* Model-generated one-sentence skim, sits between the chapter heading and
+ * the per-segment bullets. Italic to mark it as derived/synthesised. */
+.mm-time-chapter-summary {
+  margin: -4px 0 8px;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--mm-ink-2, var(--mm-ink));
+  font-style: italic;
+}
+
+.mm-time-chapter-bullets {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mm-time-chapter-bullets li {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 12px;
+  align-items: baseline;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--mm-ink-2);
+}
+
+.mm-time-bullet-speaker {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .mm-time-chapter-bullets li {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+}
+
+/* OpenRouter status panel — shown in Settings when provider=openrouter.
+ * Surfaces the API key state and the "data leaves the machine" warning
+ * so the user has both pieces of information before clicking Save. */
+.mm-openrouter-card {
+  grid-column: 1 / -1;
+  margin-top: 4px;
+  padding: 16px 18px;
+  background: var(--mm-bone-2);
+  border: 1px dashed var(--mm-rule);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+.mm-openrouter-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.mm-openrouter-note {
+  margin: 0;
+  font-size: 12px;
+  color: var(--mm-ink-3);
+  line-height: 1.5;
+}
+
+.mm-openrouter-note code {
+  font-size: 11px;
+  background: rgba(255, 255, 255, 0.04);
+  padding: 1px 5px;
+  border-radius: 4px;
+  word-break: break-all;
+}
+
+.mm-openrouter-snippet {
+  display: inline-block;
+  margin-top: 6px;
+}
+
+.mm-openrouter-warning {
+  margin: 0;
+  font-size: 12px;
+  color: var(--mm-clay);
+  line-height: 1.5;
+  padding-top: 8px;
+  border-top: 1px dotted var(--mm-rule);
+}
+
+/* Voices metric: speaker chip row instead of a raw count.
+ * Clicking a chip opens the SpeakerEditModal (rename/move/move-all). */
+.mm-hero-voices {
+  min-width: 0;
+}
+
+.mm-voice-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.mm-voice-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px 4px 4px;
+  background: var(--mm-bone-2);
+  border: 1px solid var(--mm-rule);
+  border-radius: 999px;
+  cursor: pointer;
+  color: var(--mm-ink);
+  font-family: var(--mm-font-body);
+  font-size: 12px;
+  transition: border-color var(--mm-dur-fast), background-color var(--mm-dur-fast);
+}
+
+.mm-voice-chip:hover {
+  border-color: var(--mm-clay);
+  background: rgba(200, 255, 91, 0.05);
+}
+
+.mm-voice-chip-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 140px;
+}
+
+/* Read-only voice chip (used in the top meta strip where we don't want
+ * each chip to open the speaker-edit modal). Same shape, no hover lift. */
+.mm-voice-chip-readonly {
+  cursor: default;
+}
+
+.mm-voice-chip-readonly:hover {
+  border-color: var(--mm-rule);
+  background: var(--mm-bone-2);
+}
+
+/* Full-width Voices strip on the Mind Map. Replaces the prior Duration +
+ * Voices duo in the hero strip — duration now lives in the meta strip
+ * above so we don't repeat it. */
+.mm-voices-strip {
+  margin: 18px 0 16px;
+  padding: 14px 18px;
+  background: var(--mm-bone-2);
+  border: 1px solid var(--mm-rule);
+  border-radius: 10px;
+}
+
+/* Voices-in-meta-strip column gets to span its content. */
+.mm-meta-voices {
+  min-width: 0;
+}
+
+/* Theme pills — short two-word lenses on this specific meeting. Sit
+ * above the hero strip so readers see the angle before the numbers. */
+.mm-theme-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 16px 0 18px;
+}
+
+.mm-theme-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  background: rgba(200, 255, 91, 0.08);
+  color: var(--mm-clay);
+  border: 1px solid var(--mm-clay);
+  border-radius: 999px;
+  font-family: var(--mm-font-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+[data-mm-mode="day"] .mm-theme-pill {
+  background: var(--mm-clay-soft);
+}
+
+/* Stat callout cards — big-number highlights. Grid of up to 3, each card
+ * leads with a large number and trails with a short label. */
+.mm-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin: 18px 0 24px;
+}
+
+.mm-stat-card {
+  background: var(--mm-bone-2);
+  border: 1px solid var(--mm-rule);
+  border-radius: 10px;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mm-stat-value {
+  font-family: var(--mm-font-display);
+  font-size: 32px;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  color: var(--mm-clay);
+  word-break: break-word;
+  hyphens: auto;
+}
+
+.mm-stat-label {
+  font-size: 12.5px;
+  line-height: 1.4;
+  color: var(--mm-ink-2);
+}
+
+/* Tension cards — sentiment-split for meeting moments where two sides
+ * emerged. Each card has a title and a positive/negative split. */
+.mm-tension-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 18px 0 28px;
+}
+
+.mm-tension-card {
+  background: var(--mm-bone-2);
+  border: 1px solid var(--mm-rule);
+  border-left: 3px solid var(--mm-clay);
+  border-radius: 10px;
+  padding: 16px 18px;
+}
+
+.mm-tension-title {
+  font-family: var(--mm-font-display);
+  font-size: 16px;
+  letter-spacing: -0.005em;
+  color: var(--mm-ink);
+  margin-bottom: 12px;
+}
+
+.mm-tension-sides {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.mm-tension-side {
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: var(--mm-bone);
+}
+
+.mm-tension-side .mm-lbl {
+  margin-bottom: 4px;
+  font-size: 9px;
+  letter-spacing: 0.22em;
+}
+
+.mm-tension-side p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--mm-ink-2);
+}
+
+.mm-tension-positive {
+  border-left: 2px solid var(--mm-sage);
+}
+
+.mm-tension-negative {
+  border-left: 2px solid var(--mm-rust, #c7775a);
+}
+
+[data-mm-mode="night"] .mm-tension-side {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+/* Action items grouped by @Owner. Each group is a card with a header
+ * showing the owner + count and a tight list of actions. */
+.mm-action-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 8px;
+}
+
+.mm-action-group {
+  background: var(--mm-bone-2);
+  border: 1px solid var(--mm-rule);
+  border-radius: 10px;
+  padding: 12px 16px;
+}
+
+.mm-action-group-you {
+  border-color: var(--mm-clay);
+  background: rgba(200, 255, 91, 0.04);
+}
+
+[data-mm-mode="day"] .mm-action-group-you {
+  background: var(--mm-clay-soft);
+}
+
+.mm-action-group-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 8px;
+  margin-bottom: 8px;
+  border-bottom: 1px dotted var(--mm-rule);
+}
+
+.mm-action-group-name {
+  font-family: var(--mm-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--mm-ink);
+}
+
+.mm-action-group-count {
+  font-family: var(--mm-font-mono);
+  font-size: 10px;
+  color: var(--mm-ink-3);
+  margin-left: auto;
+}
+
+.mm-action-group .mm-action-list {
+  margin: 0;
+  gap: 4px;
+}
+
+.mm-action-group .mm-action-row {
+  border: none;
+  background: transparent;
+  padding: 6px 0;
+  border-radius: 0;
+}
+
+.mm-action-group-you .mm-action-yours-row {
+  border: none;
+  background: transparent;
+}
+
+/* Mobile: tension card splits stack vertically, stat grid stays a single
+ * column at narrow widths. */
+@media (max-width: 768px) {
+  .mm-tension-sides {
+    grid-template-columns: 1fr;
+  }
+
+  .mm-stat-value {
+    font-size: 26px;
+  }
+}
+
+/* Editable title — click the meeting hero title to rename in place. */
+.mm-editable-title {
+  display: inline-block;
+  cursor: text;
+  position: relative;
+  padding: 0 4px;
+  margin: 0 -4px;
+  border-radius: 4px;
+  transition: background-color var(--mm-dur-fast);
+}
+
+.mm-editable-title:hover {
+  background: rgba(200, 255, 91, 0.06);
+}
+
+/* Post-ingest speaker assignment modal — one row per unconfirmed speaker
+ * with ranked suggestion chips + a free-text input. */
+.mm-modal-speakers {
+  max-width: 600px;
+}
+
+.mm-post-ingest-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-height: 56vh;
+  overflow-y: auto;
+}
+
+.mm-post-ingest-row {
+  padding: 14px;
+  background: var(--mm-bone-2);
+  border: 1px solid var(--mm-rule);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.mm-post-ingest-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mm-post-ingest-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.mm-post-ingest-suggestion {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: var(--mm-bone);
+  border: 1px solid var(--mm-rule);
+  border-radius: 999px;
+  font-family: var(--mm-font-body);
+  font-size: 12px;
+  color: var(--mm-ink);
+  cursor: pointer;
+  transition: border-color var(--mm-dur-fast), background-color var(--mm-dur-fast);
+}
+
+.mm-post-ingest-suggestion:hover {
+  border-color: var(--mm-ink-3);
+}
+
+.mm-post-ingest-suggestion.is-picked {
+  border-color: var(--mm-clay);
+  background: rgba(200, 255, 91, 0.08);
+}
+
+.mm-post-ingest-suggestion .mm-mono {
+  font-size: 10px;
+  opacity: 0.6;
+}
+
+.mm-editable-title-input {
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  font-style: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
+  color: var(--mm-ink);
+  background: var(--mm-bone-2);
+  border: 1px solid var(--mm-clay);
+  border-radius: 6px;
+  padding: 4px 8px;
+  width: 100%;
+  max-width: 100%;
+  outline: none;
+}
+
+.mm-ingest-template-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.mm-ingest-template {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  padding: 14px 16px;
+  background: var(--mm-bone-2);
+  border: 1px solid var(--mm-rule);
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: left;
+  color: var(--mm-ink);
+  font-family: var(--mm-font-body);
+  transition: border-color var(--mm-dur-fast), background-color var(--mm-dur-fast);
+}
+
+.mm-ingest-template:hover {
+  border-color: var(--mm-ink-3);
+}
+
+.mm-ingest-template.is-picked {
+  border-color: var(--mm-clay);
+  background: rgba(200, 255, 91, 0.06);
+}
+
+.mm-ingest-template-name {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.mm-ingest-template-id {
+  font-size: 10px;
+  opacity: 0.6;
+}
+
+@media (max-width: 768px) {
+  .mm-inbox-row {
+    grid-template-columns: 32px 1fr 32px;
+    grid-template-areas:
+      "icon body remove"
+      ".    tmpl tmpl";
+    gap: 8px;
+  }
+
+  .mm-inbox-icon {
+    grid-area: icon;
+  }
+
+  .mm-inbox-row-body {
+    grid-area: body;
+  }
+
+  .mm-inbox-template {
+    grid-area: tmpl;
+    max-width: none;
+    width: 100%;
+  }
+
+  .mm-inbox-row > button[aria-label^="Remove"] {
+    grid-area: remove;
+  }
+
+  .mm-ingest-template-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@keyframes mm-toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .mm-toast-stack {
+    top: 12px;
+    right: 12px;
+    left: 12px;
+    max-width: none;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+ * Mobile shape (≤ 768px)
+ *
+ * Strategy: bottom-fixed sidebar nav (iOS/Android tab-bar pattern), stack
+ * the review split, linearise the meta + minutes grids, make all touch
+ * targets ≥ 44pt. Desktop layout is untouched above this breakpoint.
+ * ───────────────────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  body {
+    font-size: 14px;
+  }
+
+  /* Shell: vertical stack with bottom-nav clearance so sidebar doesn't
+   * overlap the last screen of content. */
+  .mm-shell {
+    flex-direction: column;
+  }
+
+  .mm-main {
+    padding-bottom: 84px;
+  }
+
+  /* Sidebar collapses into a fixed bottom tab bar. Hide brand, footer,
+   * identity chip, palette button, mode toggle — those move to the
+   * top-right of the main canvas or get suppressed entirely. */
+  .mm-sidebar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: auto;
+    width: 100vw;
+    height: 64px;
+    min-height: 64px;
+    padding: 6px 0 max(6px, env(safe-area-inset-bottom));
+    border-right: none;
+    border-top: 1px solid var(--mm-rule);
+    background: var(--mm-bone);
+    flex-direction: row;
+    align-items: center;
+    z-index: 40;
+    backdrop-filter: blur(10px);
+  }
+
+  [data-mm-mode="night"] .mm-sidebar {
+    background: rgba(11, 16, 32, 0.96);
+  }
+
+  .mm-sidebar-brand,
+  .mm-sidebar-foot,
+  .mm-sidebar > hr {
+    display: none;
+  }
+
+  .mm-sidebar-nav {
+    display: flex;
+    flex: 1;
+    justify-content: space-around;
+    align-items: stretch;
+    gap: 0;
+    padding: 0;
+  }
+
+  .mm-nav-item {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2px;
+    width: auto;
+    flex: 1;
+    margin: 0;
+    padding: 6px 4px;
+    font-size: 10px;
+    letter-spacing: 0.03em;
+    border-radius: 0;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  .mm-nav-item .mm-glyph {
+    font-size: 18px;
+  }
+
+  .mm-nav-item.is-active {
+    color: var(--mm-clay) !important;
+  }
+
+  [data-mm-mode="night"] .mm-nav-item.is-active,
+  [data-mm-mode="day"] .mm-nav-item.is-active {
+    background: transparent !important;
+  }
+
+  /* Show count as a small dot-badge instead of the desktop number pill,
+   * so users still see something is waiting without the bottom-tab
+   * row crowding. */
+  .mm-nav-item .mm-count {
+    position: absolute;
+    top: 4px;
+    right: calc(50% - 18px);
+    min-width: 6px;
+    height: 6px;
+    padding: 0;
+    border-radius: 50%;
+    background: var(--mm-clay);
+    color: transparent;
+    overflow: hidden;
+    font-size: 0;
+  }
+
+  .mm-nav-item {
+    position: relative;
+  }
+
+  /* Floating ⌘ palette button — the desktop palette CTA is hidden when
+   * the sidebar collapses, so we surface a small floating launcher that
+   * sits just above the bottom tab bar. */
+  .mm-mobile-palette-fab {
+    position: fixed;
+    right: 16px;
+    bottom: calc(72px + env(safe-area-inset-bottom));
+    z-index: 41;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 1px solid var(--mm-rule);
+    background: var(--mm-bone);
+    color: var(--mm-ink);
+    box-shadow: var(--mm-shadow-card);
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  [data-mm-mode="night"] .mm-mobile-palette-fab {
+    background: rgba(11, 16, 32, 0.96);
+  }
+
+  /* Re-expose identity edit + palette as a thin top utility row in the
+   * main canvas so they're reachable without a hamburger. */
+  .mm-sidebar-identity {
+    margin: 0;
+  }
+
+  /* Screen padding tightens on small viewports. */
+  .mm-screen {
+    padding: 24px 16px 16px;
+  }
+
+  .mm-screen-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .mm-screen-header h1 {
+    font-size: 36px;
+    line-height: 1.05;
+  }
+
+  .mm-screen-actions {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .mm-screen-actions .mm-btn,
+  .mm-screen-actions button {
+    min-height: 44px;
+  }
+
+  /* Review split — sidebar rail goes above the detail and scrolls
+   * normally instead of being sticky. */
+  .mm-review-split {
+    flex-direction: column;
+    min-height: auto;
+  }
+
+  .mm-review-rail {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid var(--mm-rule);
+    padding: 20px 16px;
+    position: static;
+    max-height: none;
+  }
+
+  .mm-review-rail h2 {
+    font-size: 28px;
+  }
+
+  .mm-review-detail {
+    padding: 16px;
+  }
+
+  .mm-review-hero {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+  }
+
+  .mm-review-hero h1 {
+    font-size: 30px;
+    line-height: 1.05;
+  }
+
+  .mm-review-actions {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .mm-review-actions .mm-btn {
+    min-height: 44px;
+    flex: 1 1 auto;
+  }
+
+  /* Meta strip + hero strip — stack as 2-column grid; each metric reads
+   * cleanly without horizontal scroll. */
+  .mm-meta-strip,
+  .mm-hero-strip,
+  .mm-hero-strip-quiet {
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  .mm-hero-value {
+    font-size: 22px !important;
+  }
+
+  /* TL;DR pads less but stays prominent. */
+  .mm-tldr {
+    padding: 18px 16px;
+  }
+
+  .mm-tldr-text {
+    font-size: 16px;
+  }
+
+  /* Action rows + topic threads stretch full-width with bigger hit area. */
+  .mm-action-row,
+  .mm-topic-thread {
+    padding: 12px 14px;
+  }
+
+  /* Minutes grid — linear on mobile so long names don't squeeze content. */
+  .mm-minutes-row {
+    grid-template-columns: 1fr;
+    gap: 4px;
+    padding-bottom: 8px;
+    border-bottom: 1px dotted var(--mm-rule);
+  }
+
+  .mm-minutes-ts {
+    text-align: left;
+    font-size: 10px;
+  }
+
+  .mm-minutes-speaker {
+    align-self: flex-start;
+  }
+
+  /* Workstreams confidence bars — drop the % column on phone width. */
+  .mm-ws-bar {
+    grid-template-columns: 1fr 70px;
+  }
+
+  .mm-ws-bar-pct {
+    display: none;
+  }
+
+  /* Modals adopt a sheet shape: pinned to bottom, near-full-width,
+   * generous tap targets. */
+  .mm-modal-backdrop {
+    align-items: flex-end;
+    padding: 0;
+  }
+
+  .mm-modal {
+    width: 100vw;
+    max-width: 100vw;
+    margin: 0;
+    border-radius: 16px 16px 0 0;
+    max-height: 92vh;
+    overflow-y: auto;
+  }
+
+  .mm-modal-onboarding {
+    max-width: 100vw;
+  }
+
+  .mm-modal-head,
+  .mm-modal-body,
+  .mm-modal-section {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .mm-onboard-people {
+    grid-template-columns: 1fr;
+    max-height: none;
+  }
+
+  .mm-onboard-person {
+    min-height: 56px;
+  }
+
+  /* Inbox + People grids → single column with comfortable padding. */
+  .mm-inbox-grid {
+    gap: 18px;
+  }
+
+  .mm-people-list,
+  .mm-people-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .mm-people-card {
+    padding: 14px 16px;
+  }
+
+  .mm-people-claim {
+    min-height: 44px;
+  }
+
+  /* Settings panels collapse into single-column flow. */
+  .mm-settings {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Tabs scroll horizontally instead of squishing. */
+  .mm-tabs {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .mm-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .mm-tab {
+    flex-shrink: 0;
+    min-height: 44px;
+    padding: 10px 16px;
+  }
+
+  /* Section rules — slightly tighter margins. */
+  .mm-rule,
+  hr.mm-rule {
+    margin-top: 18px;
+    margin-bottom: 14px;
+  }
+
+  /* Buttons everywhere honour 44pt iOS HIG. */
+  .mm-btn,
+  button.mm-btn {
+    min-height: 44px;
+  }
+
+  .mm-btn-sm {
+    min-height: 36px;
+  }
+
+  /* iOS auto-zooms inputs whose font-size is below 16px on focus. Bump
+   * every text-entry control to 16px on mobile to suppress that. */
+  input.mm-input,
+  textarea.mm-input,
+  select.mm-input {
+    font-size: 16px;
+  }
+
+  /* Scrubber play/pause/skip — desktop is 32×32; bump for touch. */
+  .mm-scrub-controls .mm-icon-btn {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  /* Inline text buttons that are essentially links — comments, edit
+   * history, revert. Default padding is 0 so the click area is the
+   * glyph height. Give them a real tap zone. */
+  .mm-tx-extras-bar button,
+  .mm-comment-meta button {
+    min-height: 36px;
+    padding: 4px 8px;
+  }
+
+  /* Meeting card delete (×) — give the destructive control a 44pt
+   * target on touch so a stray brush doesn't fire it accidentally. */
+  .mm-card-delete {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  /* Wider scrubber bar hit zone — the 6px visual stays, but expand the
+   * effective touch area via a transparent extension. */
+  .mm-scrubber-bar {
+    padding-top: 18px;
+    padding-bottom: 18px;
+    background-clip: content-box;
+  }
+
+  /* The textarea min-height was generous on desktop; shrink on phone
+   * so the keyboard doesn't bury the save controls. */
+  textarea.mm-input {
+    min-height: 80px;
+  }
+
+  /* Notice strip wraps gracefully. */
+  .mm-notice {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  /* Transcript rows — vertical stack so meta + actions don't fight for
+   * the same row at narrow widths. */
+  .mm-tx-meta {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .mm-tx-actions {
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  .mm-tx-actions .mm-btn,
+  .mm-tx-actions .mm-icon-btn {
+    min-height: 40px;
+  }
+
+  /* Quality audit grid → single column. */
+  .mm-audit-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  /* Workstream / heatmap surfaces gain horizontal scroll affordance. */
+  .mm-heatmap {
+    overflow-x: auto;
+  }
+}
+
+/* Very narrow (≤ 380px) tighten the bottom-nav labels. */
+@media (max-width: 380px) {
+  .mm-nav-item {
+    font-size: 9px;
+  }
+
+  .mm-nav-item .mm-glyph {
+    font-size: 16px;
+  }
+}
+
+/* ── Reflections tab (experimental, owner-only) ────────────────────────── */
+/* Lives in components/ReflectionsPanel.tsx. Visual language is "private
+ * journal" not "dashboard" — neutral palette, no scorecard accents, no
+ * progress bars or aggregate scores. The cards intentionally read as
+ * observations, not verdicts. */
+
+.mm-tab-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  padding: 0 6px;
+  height: 18px;
+  border-radius: 9px;
+  background: var(--mm-clay);
+  color: var(--mm-bone);
+  font-family: var(--mm-font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  margin-left: 4px;
+}
+
+.mm-reflections-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 6px 0 24px;
+}
+
+.mm-reflections-header {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.mm-reflections-title {
+  font-family: var(--mm-font-display);
+  font-weight: 400;
+  font-size: 28px;
+  letter-spacing: var(--mm-tracking-tight);
+  margin: 0;
+  color: var(--mm-ink);
+}
+
+.mm-reflections-subtitle {
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--mm-ink-3);
+  margin: 0;
+  max-width: 64ch;
+}
+
+.mm-reflections-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  border-top: 1px solid var(--mm-rule);
+  border-bottom: 1px solid var(--mm-rule);
+  padding: 12px 0;
+}
+
+.mm-reflections-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 4px 18px 4px 0;
+  border-right: 1px solid var(--mm-rule);
+  margin-right: 12px;
+}
+
+.mm-reflections-stat:last-child {
+  border-right: none;
+  margin-right: 0;
+}
+
+.mm-reflections-stat-label {
+  font-family: var(--mm-font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.05em;
+  text-transform: lowercase;
+  color: var(--mm-ink-3);
+}
+
+.mm-reflections-stat-value {
+  font-family: var(--mm-font-mono);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--mm-ink);
+}
+
+/* Empty states — designed to read as honest, not apologetic. The body
+ * text explains WHY there's nothing here so the user doesn't think the
+ * feature is broken. */
+.mm-reflections-empty {
+  padding: 22px 18px;
+  background: var(--mm-bone-2);
+  border: 1px solid var(--mm-rule);
+  border-radius: 8px;
+}
+
+.mm-reflections-empty-skipped {
+  border-left: 3px solid var(--mm-clay, var(--mm-rule));
+  padding-left: 15px;
+}
+
+.mm-reflections-empty-title {
+  margin: 0 0 6px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--mm-ink);
+}
+
+.mm-reflections-empty-body {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--mm-ink-3);
+  max-width: 62ch;
+}
+
+.mm-reflections-undo-btn {
+  margin-top: 12px;
+  padding: 6px 12px;
+  background: transparent;
+  border: 1px solid var(--mm-rule);
+  border-radius: 4px;
+  font-size: 12px;
+  color: var(--mm-ink);
+  cursor: pointer;
+}
+
+.mm-reflections-undo-btn:hover {
+  background: var(--mm-bone-3, var(--mm-bone-2));
+}
+
+.mm-reflections-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Observation cards — neutral cards, no accent borders unless
+ * confidence is high. Low-confidence fades because the design doc
+ * says low-confidence observations should be hidden by default
+ * (we render them but at reduced visual weight). */
+.mm-reflection {
+  padding: 16px 18px;
+  background: var(--mm-bone-2);
+  border: 1px solid var(--mm-rule);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mm-reflection-high {
+  border-left: 3px solid var(--mm-accent, var(--mm-ink-2, var(--mm-ink)));
+  padding-left: 15px;
+}
+
+.mm-reflection-low {
+  opacity: 0.7;
+}
+
+.mm-reflection-kind {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--mm-font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.05em;
+  text-transform: lowercase;
+  color: var(--mm-ink-3);
+}
+
+.mm-reflection-confidence {
+  padding: 1px 6px;
+  background: var(--mm-bone-3, var(--mm-bone-2));
+  border: 1px solid var(--mm-rule);
+  border-radius: 8px;
+  font-size: 9.5px;
+  color: var(--mm-ink-3);
+}
+
+.mm-reflection-text {
+  margin: 0;
+  font-size: 14.5px;
+  line-height: 1.5;
+  color: var(--mm-ink);
+}
+
+.mm-reflection-evidence {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+}
+
+.mm-reflection-evidence-label {
+  font-family: var(--mm-font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.05em;
+  text-transform: lowercase;
+  color: var(--mm-ink-3);
+  margin-right: 4px;
+}
+
+.mm-reflection-evidence-pill {
+  font-family: var(--mm-font-mono);
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: var(--mm-bone-3, var(--mm-bone-2));
+  border: 1px solid var(--mm-rule);
+  color: var(--mm-ink-2, var(--mm-ink));
+  cursor: pointer;
+  transition: background var(--mm-dur-fast);
+}
+
+.mm-reflection-evidence-pill:hover:not(:disabled) {
+  background: var(--mm-accent-tint, var(--mm-bone-2));
+}
+
+.mm-reflection-evidence-pill:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+.mm-reflection-why,
+.mm-reflection-next {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--mm-ink-3);
+  max-width: 64ch;
+}
+
+.mm-reflection-why-label,
+.mm-reflection-next-label {
+  font-family: var(--mm-font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.05em;
+  text-transform: lowercase;
+  color: var(--mm-ink-3);
+  margin-right: 4px;
+}
+
+/* Helpful / not-helpful — minimal buttons. Stays local; no badge,
+ * no count, no streak. */
+.mm-reflection-feedback {
+  display: flex;
+  gap: 10px;
+  margin-top: 4px;
+  padding-top: 8px;
+  border-top: 1px dashed var(--mm-rule);
+}
+
+.mm-reflection-thumb {
+  background: transparent;
+  border: none;
+  color: var(--mm-ink-3);
+  font-family: var(--mm-font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  padding: 4px 6px;
+}
+
+.mm-reflection-thumb:hover {
+  color: var(--mm-ink-2, var(--mm-ink));
+}
+
+.mm-reflection-thumb.is-active {
+  color: var(--mm-clay);
+  font-weight: 600;
+}
+
+/* Footer — AI disclosure (always-on, per disclosure-effect research)
+ * and the per-meeting skip toggle. Both intentionally muted so the
+ * footer doesn't compete with the observations themselves. */
+.mm-reflections-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+  padding-top: 14px;
+  border-top: 1px solid var(--mm-rule);
+}
+
+.mm-reflections-disclosure {
+  font-size: 11.5px;
+  color: var(--mm-ink-3);
+  max-width: 56ch;
+}
+
+.mm-reflections-skip-btn {
+  background: transparent;
+  border: 1px solid var(--mm-rule);
+  border-radius: 4px;
+  padding: 6px 12px;
+  font-size: 12px;
+  color: var(--mm-ink-3);
+  cursor: pointer;
+}
+
+.mm-reflections-skip-btn:hover {
+  color: var(--mm-ink);
+  background: var(--mm-bone-3, var(--mm-bone-2));
+}
+
+/* Narrow-viewport polish for the new IA components (Phases 1-3).
+ * Placed at the end of the file so it wins over ALL desktop rules
+ * via source-order specificity — putting this earlier let later
+ * desktop rules (e.g. .mm-meta-line) override these mobile values.
+ * Below 700px the desktop padding and font-sizes feel oversized; this
+ * block scales them down while preserving the hierarchy. */
+@media (max-width: 700px) {
+  .mm-recap {
+    padding: 22px 20px;
+    margin: 18px 0 24px;
+    gap: 18px;
+  }
+  .mm-recap-header {
+    font-size: 16px;
+    line-height: 1.35;
+  }
+  .mm-recap-body {
+    font-size: 14px;
+  }
+  .mm-recap-trailer {
+    font-size: 13px;
+  }
+  .mm-recap-bullets li {
+    font-size: 13px;
+  }
+  .mm-analytics-disclosure > summary {
+    padding: 12px 14px;
+    font-size: 15px;
+  }
+  .mm-commitments-subhead {
+    font-size: 16px;
+    margin: 18px 0 8px;
+  }
+  /* Meta-line stays at 13px (the desktop baseline) — dropping to
+   * 12px pushed the day-mode `--mm-ink-3` color below the 4.5:1
+   * WCAG AA threshold on `--mm-bone`. Smaller gap only. */
+  .mm-meta-line {
+    gap: 6px;
+  }
+}

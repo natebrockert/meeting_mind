@@ -1,0 +1,112 @@
+[project]
+name = "meetingmind"
+version = "0.2.14"
+description = "Local-first meeting transcription, review, and Obsidian memory system."
+readme = "README.md"
+requires-python = ">=3.11,<3.13"
+license = { file = "LICENSE" }
+dependencies = [
+  "fastapi>=0.115.0",
+  "uvicorn[standard]>=0.30.0",
+  "pydantic>=2.8.0",
+  "pydantic-settings>=2.4.0",
+  "python-multipart>=0.0.9",
+  "aiofiles>=24.1.0",
+  "watchfiles>=0.22.0",
+  "httpx>=0.27.0",
+  "tomli-w>=1.0.0",
+  "typer>=0.12.0",
+  "rich>=13.7.0",
+]
+
+[project.optional-dependencies]
+# Apple Silicon path: mlx-whisper is darwin/arm64-only. Without the
+# marker `uv sync --extra ml` on Linux/Intel fails to resolve MLX wheels
+# and leaves the install half-broken. Linux + Intel macOS testers should
+# use the `ml-cpu` extra instead.
+ml = [
+  "mlx-whisper>=0.4.2 ; sys_platform == 'darwin' and platform_machine == 'arm64'",
+  "pyannote.audio>=3.3.0",
+  # pyannote/embedding (legacy model used for cross-meeting speaker ID)
+  # needs omegaconf at load time. pyannote.audio 4.x dropped it as a
+  # transitive dep, so pin it here.
+  "omegaconf>=2.3.0",
+  # torchcodec is a transitive of pyannote.audio. Versions >=0.8 require
+  # PyTorch 2.9+; pyannote.audio currently pins torch 2.8.x via its own
+  # constraints. Pin torchcodec to the 0.7.x line so it loads against
+  # our PyTorch ABI on macOS. (Hit this on 2026-05-14 when uv resolved
+  # torchcodec 0.11.1, which crashed with "Symbol not found __ZNK3c1010
+  # TensorImpl15decref_pyobjectEv" in libtorchcodec_core8 / pyannote's
+  # AudioDecoder. See PyPI torchcodec compatibility table.)
+  "torchcodec>=0.7,<0.8",
+]
+ml-cpu = [
+  "faster-whisper>=1.0.3",
+  "pyannote.audio>=3.3.0",
+  "omegaconf>=2.3.0",
+  "torchcodec>=0.7,<0.8",  # same ABI pin as ml extra — see comment above
+]
+# Low-friction CPU stack: no HF token, no gated models, no Apple-Silicon
+# requirement. Diarization via FoxNoseTech's `diarize` (built-in Silero VAD
+# + WeSpeaker ONNX), speaker embeddings via wespeakerruntime (same model
+# space so rename-once matching stays aligned), ASR via faster-whisper.
+# A/B-tested against `ml` in v0.1.7; defaults stay on the legacy stack
+# until quality is verified on real meetings.
+ml-lite = [
+  "diarize>=0.1.2",
+  "wespeakerruntime>=1.0.1",
+  "faster-whisper>=1.0.3",
+]
+dev = [
+  "pytest>=8.3.0",
+  "pytest-asyncio>=0.23.0",
+  "pre-commit>=4.0.0",
+  "ruff>=0.6.0",
+  "mypy>=1.11.0",
+]
+
+[project.scripts]
+meetingmind = "app.cli:main"
+
+[build-system]
+requires = ["setuptools>=77.0.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["backend"]
+include = ["app*"]
+
+[tool.uv]
+package = true
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+# Typer's `typer.Option(...)` idiom is the canonical way to declare CLI
+# defaults, and tripping B008 across every command is noise. Long lines
+# are unavoidable in the hand-rolled PDF coordinate math and in a few
+# multi-column SQL templates — keep enforcement on for everything else.
+ignore = ["B008"]
+
+[tool.ruff.lint.per-file-ignores]
+# Hand-rolled PDF + inline HTML/CSS export = inevitable long lines.
+"backend/app/services/pdf_export.py" = ["E501"]
+"backend/app/services/html_export.py" = ["E501"]
+"backend/app/services/pipeline.py" = ["E501"]
+"backend/app/services/ingestion.py" = ["E501"]
+"backend/app/services/model_bus.py" = ["E501"]
+"backend/app/services/extraction.py" = ["E501"]
+"backend/app/cli.py" = ["E501", "B904", "SIM105"]
+"backend/app/api/routes.py" = ["SIM118", "E501"]
+# Test fixtures contain inline SQL DDL that's clearer as one line each.
+"backend/tests/*.py" = ["E501"]
+
+[tool.pytest.ini_options]
+testpaths = ["backend/tests"]
+pythonpath = ["backend"]
+markers = [
+  "slow: integration tests that run local model or browser workflows",
+]

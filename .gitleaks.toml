@@ -1,0 +1,8 @@
+[extend]
+useDefault = true
+
+[allowlist]
+description = "MeetingMind placeholder allowlist"
+paths = [
+  '''^\.env\.example$''',
+]

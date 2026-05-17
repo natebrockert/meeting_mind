@@ -1,0 +1,42 @@
+name: codeql
+
+# GitHub's native static analysis. Free for public repos, low-maintenance,
+# catches a real class of bugs (SQL injection, path traversal, command
+# injection, unsafe deserialization, etc.) that ruff + bandit don't.
+#
+# Runs on every PR plus a weekly schedule so newly-published query packs
+# scan the codebase even if no commits land. Findings show up in the
+# Security tab of the repo.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  schedule:
+    # Sunday 04:23 UTC — off-peak, avoids the top-of-hour CI surge.
+    - cron: "23 4 * * 0"
+
+permissions:
+  contents: read
+  security-events: write
+  actions: read
+
+jobs:
+  analyze:
+    name: analyze (${{ matrix.language }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # Python covers the FastAPI backend; JavaScript covers the React frontend
+        # (TypeScript files are analyzed by the JS extractor).
+        language: [python, javascript]
+    steps:
+      - uses: actions/checkout@v6
+      - uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+          queries: security-and-quality
+      - uses: github/codeql-action/analyze@v3
+        with:
+          category: /language:${{ matrix.language }}

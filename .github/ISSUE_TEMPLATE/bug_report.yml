@@ -1,0 +1,45 @@
+name: Bug report
+description: Something broken or misbehaving in MeetingMind
+labels: [bug]
+body:
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: A clear, concrete description. Steps to reproduce help a lot.
+      placeholder: |
+        1. Drop `meeting.m4a` into the inbox
+        2. Click Ingest
+        3. Backend logs show … and the dashboard shows …
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: env
+    attributes:
+      label: Environment
+      description: Paste the output of `uv run meetingmind doctor`.
+      render: shell
+    validations:
+      required: true
+  - type: input
+    id: model
+    attributes:
+      label: LLM provider + model
+      placeholder: openrouter · x-ai/grok-4.3
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs
+      description: From `runtime/logs/backend.log` or `runtime/logs/frontend.log`. Redact anything sensitive.
+      render: shell
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots / video
+      description: If the bug touches the dashboard.

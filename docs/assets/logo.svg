@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none" role="img" aria-label="MeetingMind logo">
+  <rect x="2" y="2" width="60" height="60" rx="16" fill="#0b1020"/>
+  <rect x="2" y="2" width="60" height="60" rx="16" fill="none" stroke="#c8ff5b" stroke-opacity="0.18" stroke-width="1.2"/>
+  <text x="32" y="48" text-anchor="middle" font-family="DM Serif Display, Georgia, serif" font-style="italic" font-size="44" fill="#c8ff5b">m</text>
+</svg>

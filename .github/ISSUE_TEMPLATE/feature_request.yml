@@ -1,0 +1,20 @@
+name: Feature request
+description: A workflow MeetingMind doesn't support today
+labels: [enhancement]
+body:
+  - type: textarea
+    id: workflow
+    attributes:
+      label: What workflow are you trying to support?
+      description: Describe the real-world thing you're trying to do. Often there's a smaller change that solves the underlying problem than the feature you imagine.
+    validations:
+      required: true
+  - type: textarea
+    id: current
+    attributes:
+      label: What does MeetingMind do today?
+      description: If MeetingMind already does something close to this but it's awkward, describe what's awkward.
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Have you tried any workarounds?

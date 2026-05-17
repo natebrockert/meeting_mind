@@ -1,0 +1,22 @@
+[
+  {
+    "name": "repeated_phrase_hallucination",
+    "text": "Sorry to interrupt sales sales sales sales sales sales sales sales sales sales sales sales sales sales sales sales sales sales sales sales sales sales sales sales sales sales sales sales sales sales",
+    "expected_issue": "repetition"
+  },
+  {
+    "name": "cross_talk_marker",
+    "text": "I can take that question -- wait one second -- yes, go ahead, no you go first, the timeline is still next Friday.",
+    "expected_issue": null
+  },
+  {
+    "name": "silence_gap_placeholder",
+    "text": "[silence] [inaudible] We should confirm this before it goes into the notes.",
+    "expected_issue": null
+  },
+  {
+    "name": "noisy_audio_fragment",
+    "text": "The customer said the renewal number was garbled but the action is to verify the amount after the call.",
+    "expected_issue": null
+  }
+]

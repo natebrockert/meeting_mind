@@ -1,0 +1,4 @@
+# Every PR auto-requests review from the repo owner.
+# Future contributors can extend this with per-directory ownership
+# (e.g. `frontend/ @some-other-handle`).
+* @natebrockert

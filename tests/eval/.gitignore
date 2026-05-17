@@ -1,0 +1,4 @@
+# Eval fixtures are private — each user maintains their own corpus.
+# Schema docs live in README.md; the harness handles empty corpus gracefully.
+fixtures/*/
+!fixtures/.gitkeep

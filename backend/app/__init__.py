@@ -1,0 +1,1 @@
+"""MeetingMind backend package."""
