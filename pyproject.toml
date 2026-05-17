@@ -38,13 +38,13 @@ ml = [
   # torchcodec 0.11.1, which crashed with "Symbol not found __ZNK3c1010
   # TensorImpl15decref_pyobjectEv" in libtorchcodec_core8 / pyannote's
   # AudioDecoder. See PyPI torchcodec compatibility table.)
-  "torchcodec>=0.7,<0.8",
+  "torchcodec>=0.7,<0.13",
 ]
 ml-cpu = [
   "faster-whisper>=1.0.3",
   "pyannote.audio>=3.3.0",
   "omegaconf>=2.3.0",
-  "torchcodec>=0.7,<0.8",  # same ABI pin as ml extra — see comment above
+  "torchcodec>=0.7,<0.13",  # same ABI pin as ml extra — see comment above
 ]
 # Low-friction CPU stack: no HF token, no gated models, no Apple-Silicon
 # requirement. Diarization via FoxNoseTech's `diarize` (built-in Silero VAD
