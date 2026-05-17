@@ -14,17 +14,17 @@
     "lint": "eslint src --ext ts,tsx"
   },
   "dependencies": {
-    "@vitejs/plugin-react": "^6.0.1",
+    "@vitejs/plugin-react": "^6.0.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "typescript": "^6.0.3",
-    "vite": "^8.0.12"
+    "vite": "^8.0.13"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
-    "eslint": "^10.3.0",
+    "eslint": "^10.4.0",
     "playwright": "^1.60.0",
     "typescript-eslint": "^8.59.3"
   }
