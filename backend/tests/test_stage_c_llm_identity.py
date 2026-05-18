@@ -86,11 +86,12 @@ def _seed_candidate(
 # ── _build_inputs ─────────────────────────────────────────────────────
 
 
-def test_build_inputs_assembles_owner_candidates_and_speaker_samples(
+def test_build_inputs_assembles_owner_candidates_and_dialogue(
     tmp_path: Path,
 ) -> None:
-    """Per-speaker longest segments + candidate pool + owner are all
-    in the prompt input."""
+    """Owner + candidate pool + chronological dialogue (with
+    diarization labels intact, temporal order preserved) are all in
+    the prompt input."""
     from app.services.repair.llm_identity import _build_inputs
 
     cfg = _sandbox_config(tmp_path)
@@ -108,8 +109,16 @@ def test_build_inputs_assembles_owner_candidates_and_speaker_samples(
     assert inputs is not None
     assert inputs["owner"] == "Owner"
     assert inputs["candidates"] == ["John"]
-    assert "Speaker 1" in inputs["speakers"]
-    assert "Speaker 2" in inputs["speakers"]
+    dialogue = inputs["dialogue"]
+    # Each segment becomes a "Speaker N: text" line.
+    assert "Speaker 1: Hey, John. Happy Friday." in dialogue
+    assert "Speaker 2: Yeah happy Friday." in dialogue
+    # Temporal order is preserved — Speaker 1's first line precedes
+    # Speaker 2's response, which precedes Speaker 1's second line.
+    idx_s1_first = dialogue.find("Hey, John")
+    idx_s2 = dialogue.find("Yeah happy")
+    idx_s1_second = dialogue.find("long enough")
+    assert 0 <= idx_s1_first < idx_s2 < idx_s1_second
 
 
 def test_build_inputs_returns_none_without_candidates(tmp_path: Path) -> None:
@@ -132,19 +141,40 @@ def test_build_inputs_returns_none_without_segments(tmp_path: Path) -> None:
     assert _build_inputs(cfg, 1) is None
 
 
-def test_build_inputs_caps_speaker_samples_at_3(tmp_path: Path) -> None:
-    """A monologue speaker contributes at most 3 of their longest
-    segments — bounded prompt size."""
+def test_build_inputs_caps_dialogue_at_15k_chars(tmp_path: Path) -> None:
+    """Long transcripts are truncated to ~15k chars. The head + tail
+    are preserved (intros + landing) with an ellipsis marker between.
+    Cross-attribution reasoning needs the high-signal portions of the
+    conversation, not the middle filler.
+    """
     from app.services.repair.llm_identity import _build_inputs
 
     cfg = _sandbox_config(tmp_path)
-    segments = [("Speaker 1", f"segment {i}") for i in range(10)]
+    # Each segment ~150 chars, repeated 500 times → ~75k chars raw,
+    # well past the 15k cap.
+    big_line = "x" * 150
+    segments = [
+        ("Speaker 1", f"HEAD-{i}-{big_line}") if i < 5
+        else (
+            ("Speaker 1", f"TAIL-{i}-{big_line}") if i >= 495
+            else ("Speaker 1", f"MID-{i}-{big_line}")
+        )
+        for i in range(500)
+    ]
     _seed_meeting_with_segments(cfg, segments=segments)
     _seed_candidate(cfg, 1, "Speaker 1", "Solo")
 
     inputs = _build_inputs(cfg, 1)
     assert inputs is not None
-    assert len(inputs["speakers"]["Speaker 1"]) == 3
+    dialogue = inputs["dialogue"]
+    # Total well under raw 75k.
+    assert len(dialogue) < 18_000
+    # Head and tail markers present, middle filler absent.
+    assert "HEAD-0" in dialogue
+    assert "TAIL-499" in dialogue
+    assert "MID-250" not in dialogue
+    # Truncation marker appears between head and tail.
+    assert "transcript truncated" in dialogue
 
 
 # ── load_llm_speaker_identities cache round-trip ────────────────────
