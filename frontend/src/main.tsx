@@ -1033,18 +1033,11 @@ function App() {
     () => savedSpeakerIdSet(speakerIds, speakerAliasById, speakerLabels),
     [speakerIds, speakerAliasById, speakerLabels],
   );
-  // Open the post-ingest speaker modal once per session per meeting when
-  // there are voices but none are confirmed yet. The modal pulls suggested
-  // names from the existing review_items so the user can pick from a
-  // ranked list instead of starting blank.
-  useEffect(() => {
-    if (!detail) return;
-    if (postIngestSpeakerMeeting === detail.meeting.id) return;
-    if (postIngestSeen.has(detail.meeting.id)) return;
-    if (speakerIds.length === 0) return;
-    if (savedSpeakerIds.size >= speakerIds.length) return;
-    setPostIngestSpeakerMeeting(detail.meeting.id);
-  }, [detail, speakerIds, savedSpeakerIds, postIngestSpeakerMeeting, postIngestSeen]);
+  // Post-ingest speaker modal was a friction point that the deductive
+  // resolver (Stage A/B/C) is built to eliminate. Identities the
+  // resolver was confident about apply silently; anything below the
+  // threshold stays as "Speaker N" until the user explicitly renames
+  // via the transcript-page UI. No popup on meeting open.
   const reviewItems = detail?.review_items || [];
 
   // v0.2.8: surface speaker re-attribution proposals (kind=speaker_reattribution).

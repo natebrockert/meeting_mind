@@ -1239,7 +1239,7 @@ def synthesize_executive_recap(
         ],
         "chapter_markers": [
             {
-                "title": c.title,
+                "title": c.label,
                 "summary": c.summary,
                 "start_segment_id": c.start_segment_id,
             }
@@ -1258,7 +1258,7 @@ def synthesize_executive_recap(
         "participant_contributions": [
             {
                 "speaker": p.speaker,
-                "summary": p.summary,
+                "summary": p.contribution,
             }
             for p in atoms.participant_contributions
         ],
