@@ -125,6 +125,10 @@ export type MeetingOverview = {
   open_questions: string[];
   obsidian_sections: Record<string, string>;
   tldr?: string;
+  // Exactly 3 sentences for the Mind Map briefing: PURPOSE / SUBSTANCE
+  // / LANDING. Empty array when the model couldn't produce a confident
+  // briefing — UI falls back to tldr + first-summary-sentence.
+  briefing?: string[];
   themes?: string[];
   stat_callouts?: Array<{
     value: string;

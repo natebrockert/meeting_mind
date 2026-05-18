@@ -451,6 +451,7 @@ def build_meeting_overview(config: AppConfig, meeting_id: int) -> dict:
         "source_file": Path(data["imported_path"]).name,
         "summary": data["summary"] or "Review pending.",
         "tldr": data.get("tldr", ""),
+        "briefing": data.get("briefing", []),
         "executive_recap": data.get("executive_recap"),
         "participant_contributions": data.get("participant_contributions", []),
         "chapter_markers": data.get("chapter_markers", []),
@@ -832,6 +833,7 @@ def load_meeting_export_data(config: AppConfig, meeting_id: int) -> dict:
         "speaker_status": _speaker_status(export_segments, speaker_map),
         "summary": _summary_text(summary["payload_json"]) if summary else "",
         "tldr": _summary_tldr(summary["payload_json"]) if summary else "",
+        "briefing": _summary_briefing(summary["payload_json"]) if summary else [],
         "participant_contributions": (
             _summary_participant_contributions(summary["payload_json"]) if summary else []
         ),
@@ -1496,6 +1498,19 @@ def _summary_tldr(payload_json: str) -> str:
     back to a smart truncation of `summary`.
     """
     return str(_parse_summary_payload(payload_json).get("tldr", "")).strip()
+
+
+def _summary_briefing(payload_json: str) -> list[str]:
+    """Extract the 3-sentence Mind Map briefing.
+
+    Returns the list as-is from the payload, filtered to non-empty
+    trimmed strings. Older meetings (pre-briefing) return []. Renderers
+    should fall back to tldr + summary when this is empty.
+    """
+    raw = _parse_summary_payload(payload_json).get("briefing", [])
+    if not isinstance(raw, list):
+        return []
+    return [str(s).strip() for s in raw if isinstance(s, str) and s.strip()]
 
 
 def _coerce_segment_ids(raw) -> list[int]:

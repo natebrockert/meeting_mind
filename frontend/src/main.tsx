@@ -3947,12 +3947,31 @@ function SummaryMindmap({
     decisionCount > 0 ||
     overview.open_questions.length > 0;
 
+  // 3-sentence briefing block — purpose / substance / landing.
+  // Sentence 0 is the headline (purpose); sentences 1 and 2 are the
+  // body (substance + landing). When the model couldn't produce a
+  // confident 3-sentence briefing we fall through to the legacy
+  // tldr/summary surfaces below.
+  const briefing = (overview.briefing ?? []).filter((s) => s.trim().length > 0);
+  const hasBriefing = briefing.length === 3;
+
   return (
     <>
+      {hasBriefing && (
+        <section className="mm-briefing" aria-label="What this meeting was about">
+          <div className="mm-lbl-strong">WHAT</div>
+          <p className="mm-briefing-headline">{renderMentions(briefing[0])}</p>
+          <p className="mm-briefing-body">{renderMentions(briefing[1])}</p>
+          <p className="mm-briefing-body">{renderMentions(briefing[2])}</p>
+        </section>
+      )}
+
       {/* TL;DR — single canonical "what happened" surface. Wire-thin
        * headline; the long-form narrative lives in the Discussion section
        * below for readers who want depth. Edit affordance hidden in a
-       * tiny inline link rather than a heavy expander. */}
+       * tiny inline link rather than a heavy expander.
+       * When `briefing` is present (3 confident sentences), it covers
+       * the "what" — skip this card to avoid stacking two headlines. */}
       {/* v0.2.11: only render the TL;DR card when there's a real
           summary to show. Placeholder text ("Review pending.",
           "Summary still generating.") greeted the user with system
@@ -3964,7 +3983,7 @@ function SummaryMindmap({
           showing all three would put the same content on the page
           three times. Legacy meetings extracted before the recap
           feature keep their existing TL;DR / Discussion treatment. */}
-      {hasRealSummary && !overview.executive_recap && (
+      {hasRealSummary && !overview.executive_recap && !hasBriefing && (
         <section className="mm-tldr">
           <div className="mm-lbl-strong">TL;DR</div>
           <p className="mm-tldr-text">{renderMentions(tldr)}</p>
