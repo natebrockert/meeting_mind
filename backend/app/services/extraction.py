@@ -197,6 +197,17 @@ class MeetingAtoms(BaseModel):
     # Optional — old payloads predate this field; renderers fall back
     # to deriving from decisions + open_questions.
     key_takeaways: list[str] = Field(default_factory=list)
+    # Exactly 3 sentences that brief someone who didn't attend.
+    # Distinct from `summary` (narrative prose) and `tldr` (one-glance
+    # hook). Roles:
+    #   [0] PURPOSE — the strategic frame / why this meeting existed
+    #   [1] SUBSTANCE — what was actually discussed (concrete, not
+    #       "Person A said X then B said Y" — synthesize)
+    #   [2] LANDING — where it ended up: decision, open question, or
+    #       next step. Honest when nothing resolved.
+    # Rendered at the top of the Mind Map view. Empty when the model
+    # couldn't produce a confident briefing (e.g. transcript too thin).
+    briefing: list[str] = Field(default_factory=list)
     # Second-pass narrative synthesis. None when the recap call failed
     # or the meeting had no decisions/actions/chapters to recap. The
     # field rides on atoms so persist_atoms can write it in the same
@@ -314,6 +325,25 @@ TEMPLATE_PROMPTS: dict[str, str] = {
         "framing IN the tldr — the load-bearing context matters most. "
         "The fuller `summary` field should still capture "
         "the narrative; the tldr is the one-glance hook. "
+        "Supply `briefing`: EXACTLY 3 sentences that brief a colleague "
+        "who didn't attend. Each sentence has a specific role and order "
+        "matters: "
+        "[0] PURPOSE — the strategic frame (why this meeting existed, "
+        "what stage of the work it sits in). Concrete (e.g. 'Compass "
+        "check on Q3 site-selection candidates ahead of board sign-off'), "
+        "never generic ('Discussion of strategy'). "
+        "[1] SUBSTANCE — what was actually discussed. SYNTHESIZE — do "
+        "NOT write 'X said A, then Y said B'. Capture the through-line: "
+        "the markets, numbers, names, or constraints the conversation "
+        "actually moved between (e.g. 'Centered on Clark County and "
+        "Kingman as candidate markets, with hospital-relationship risk "
+        "and reimbursement dynamics as the two main lenses'). "
+        "[2] LANDING — where it ended up: a decision, an open question, "
+        "a next step, or honest 'no commitments' when nothing resolved. "
+        "Specific names and dates when stated. "
+        "Each sentence max 35 words. Plain prose, no bullets. If the "
+        "transcript is too thin to support 3 confident sentences, return "
+        "an empty array — better blank than padded. "
         "Supply `key_takeaways`: 3 to 5 short bullet-style statements "
         "(each 12-30 words) that capture WHAT someone who wasn't in this "
         "meeting needs to know. Concrete: specific markets / numbers / "
@@ -585,6 +615,19 @@ def extract_meeting_atoms(config: AppConfig, meeting_id: int) -> MeetingAtoms:
     # this meeting is about" since context flows forward. Per-chunk tldrs
     # from later chunks would describe sub-segments, not the whole.
     chunk_tldr = next((part.tldr.strip() for part in partials if part.tldr.strip()), "")
+    # Same logic for `briefing`: take the first chunk that produced a
+    # complete (3-sentence) briefing. Later chunks' briefings describe
+    # sub-segments and don't generalize to the whole meeting. If no
+    # chunk produced exactly 3 confident sentences we leave it empty —
+    # the Mind Map view degrades to the tldr + summary fallback.
+    chunk_briefing: list[str] = next(
+        (
+            [s.strip() for s in part.briefing if s.strip()]
+            for part in partials
+            if len([s for s in part.briefing if s.strip()]) == 3
+        ),
+        [],
+    )
     merged = MeetingAtoms(
         suggested_title=partials[0].suggested_title,
         tldr=chunk_tldr,
@@ -602,6 +645,7 @@ def extract_meeting_atoms(config: AppConfig, meeting_id: int) -> MeetingAtoms:
         ),
         uncertainties=[uncertainty for part in partials for uncertainty in part.uncertainties],
         key_takeaways=_merge_key_takeaways(partials),
+        briefing=chunk_briefing,
     )
     # When a long transcript produced overlapping workstreams across chunks,
     # ask the model to consolidate semantic duplicates (e.g. "Marketing
@@ -1581,6 +1625,7 @@ def persist_atoms(config: AppConfig, meeting_id: int, atoms: MeetingAtoms) -> No
                             entry.model_dump() for entry in atoms.tension_points
                         ],
                         "key_takeaways": list(atoms.key_takeaways),
+                        "briefing": list(atoms.briefing),
                     }
                 ),
                 0.8,
