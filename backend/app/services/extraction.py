@@ -10,7 +10,7 @@ from app.config import AppConfig
 from app.db.database import connect
 from app.services.model_bus import ChatMessage, ModelBus
 from app.services.transcript_quality import safe_transcript_text
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
 LOGGER = logging.getLogger(__name__)
 
@@ -208,6 +208,34 @@ class MeetingAtoms(BaseModel):
     # Rendered at the top of the Mind Map view. Empty when the model
     # couldn't produce a confident briefing (e.g. transcript too thin).
     briefing: list[str] = Field(default_factory=list)
+
+    @field_validator("briefing", mode="before")
+    @classmethod
+    def _enforce_briefing_shape(cls, v):
+        """Reject malformed briefings loudly. Only 0 (empty, valid
+        fallback) or exactly 3 non-empty strings are accepted. Anything
+        else — wrong length, non-string items, all-whitespace — gets
+        coerced to [] with a warning so the Mind Map degrades to the
+        legacy TL;DR card instead of rendering 2 sentences as if 3
+        were intended.
+        """
+        if v in (None, [], ()):
+            return []
+        if not isinstance(v, list):
+            logging.getLogger(__name__).warning(
+                "briefing rejected: not a list (got %s)", type(v).__name__
+            )
+            return []
+        clean = [s.strip() for s in v if isinstance(s, str) and s.strip()]
+        if len(clean) != 3:
+            logging.getLogger(__name__).warning(
+                "briefing rejected: expected 3 non-empty strings, "
+                "got %d (raw len=%d)",
+                len(clean),
+                len(v),
+            )
+            return []
+        return clean
     # Second-pass narrative synthesis. None when the recap call failed
     # or the meeting had no decisions/actions/chapters to recap. The
     # field rides on atoms so persist_atoms can write it in the same
@@ -324,26 +352,26 @@ TEMPLATE_PROMPTS: dict[str, str] = {
         "'this is a compass check, not a final selection'), put that "
         "framing IN the tldr — the load-bearing context matters most. "
         "The fuller `summary` field should still capture "
-        "the narrative; the tldr is the one-glance hook. "
+        "the narrative; the tldr is the one-glance hook.\n\n"
         "Supply `briefing`: EXACTLY 3 sentences that brief a colleague "
         "who didn't attend. Each sentence has a specific role and order "
         "matters: "
         "[0] PURPOSE — the strategic frame (why this meeting existed, "
-        "what stage of the work it sits in). Concrete (e.g. 'Compass "
-        "check on Q3 site-selection candidates ahead of board sign-off'), "
+        "what stage of the work it sits in). Concrete (e.g. 'Architecture "
+        "review of the payments service ahead of launch sign-off'), "
         "never generic ('Discussion of strategy'). "
         "[1] SUBSTANCE — what was actually discussed. SYNTHESIZE — do "
         "NOT write 'X said A, then Y said B'. Capture the through-line: "
-        "the markets, numbers, names, or constraints the conversation "
-        "actually moved between (e.g. 'Centered on Clark County and "
-        "Kingman as candidate markets, with hospital-relationship risk "
-        "and reimbursement dynamics as the two main lenses'). "
+        "the topics, numbers, names, or constraints the conversation "
+        "actually moved between (e.g. 'Centered on two candidate vendors, "
+        "with integration complexity and pricing flexibility as the main "
+        "lenses'). "
         "[2] LANDING — where it ended up: a decision, an open question, "
         "a next step, or honest 'no commitments' when nothing resolved. "
         "Specific names and dates when stated. "
         "Each sentence max 35 words. Plain prose, no bullets. If the "
         "transcript is too thin to support 3 confident sentences, return "
-        "an empty array — better blank than padded. "
+        "an empty array — better blank than padded.\n\n"
         "Supply `key_takeaways`: 3 to 5 short bullet-style statements "
         "(each 12-30 words) that capture WHAT someone who wasn't in this "
         "meeting needs to know. Concrete: specific markets / numbers / "
@@ -615,16 +643,20 @@ def extract_meeting_atoms(config: AppConfig, meeting_id: int) -> MeetingAtoms:
     # this meeting is about" since context flows forward. Per-chunk tldrs
     # from later chunks would describe sub-segments, not the whole.
     chunk_tldr = next((part.tldr.strip() for part in partials if part.tldr.strip()), "")
-    # Same logic for `briefing`: take the first chunk that produced a
-    # complete (3-sentence) briefing. Later chunks' briefings describe
-    # sub-segments and don't generalize to the whole meeting. If no
-    # chunk produced exactly 3 confident sentences we leave it empty —
-    # the Mind Map view degrades to the tldr + summary fallback.
+    # For `briefing`, take the LAST chunk that produced a complete
+    # 3-sentence briefing. The LANDING sentence (briefing[2]) requires
+    # the model to see how the meeting ended — first-chunk bias would
+    # report an agenda-setting "no commitments" even when the meeting
+    # later landed a decision. PURPOSE drift from late chunks is
+    # acceptable; LANDING accuracy matters more. Field validator on
+    # MeetingAtoms.briefing already enforces "exactly 3 non-empty
+    # strings or empty list" so the partials we consider are already
+    # well-formed.
     chunk_briefing: list[str] = next(
         (
-            [s.strip() for s in part.briefing if s.strip()]
-            for part in partials
-            if len([s for s in part.briefing if s.strip()]) == 3
+            list(part.briefing)
+            for part in reversed(partials)
+            if len(part.briefing) == 3
         ),
         [],
     )
