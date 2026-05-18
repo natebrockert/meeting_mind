@@ -143,8 +143,17 @@ def _compile_patterns(terms: list[str]) -> list[tuple[str, re.Pattern[str]]]:
         # slugs like a GitHub username embedded in a clone URL (by
         # design embedded in repo URLs we keep, skipped by the leading
         # boundary against the prior letter).
+        # Multi-word terms accept any mix of whitespace, hyphens, or  # pii-ok
+        # underscores between words so the hyphen / underscore  # pii-ok
+        # variants all match. Caught a real PII miss in PR #8 audit  # pii-ok
+        # where the hyphen form slipped through the literal-space match.
+        if " " in term:
+            parts = term.split(" ")
+            body = r"[\s_-]+".join(re.escape(p) for p in parts)
+        else:
+            body = re.escape(term)
         pat = re.compile(
-            rf"(?<!\w){re.escape(term)}(?![A-Za-rt-z])",
+            rf"(?<!\w){body}(?![A-Za-rt-z])",
             re.IGNORECASE,
         )
         out.append((term, pat))

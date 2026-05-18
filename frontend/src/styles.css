@@ -1793,8 +1793,52 @@ select.mm-input {
   outline-offset: 4px;
 }
 
+/* Briefing — 3-sentence "what was this meeting about" at the top of
+ * the Mind Map. Sentence 0 (purpose) is the headline, sentences 1 and
+ * 2 (substance, landing) are body copy. Replaces the TL;DR card on
+ * meetings where the model produced a confident briefing. */
+.mm-briefing {
+  margin: 28px 0 22px;
+  padding: 24px 28px;
+  background: linear-gradient(
+    135deg,
+    rgba(200, 255, 91, 0.06) 0%,
+    transparent 65%
+  );
+  border: 1px solid var(--mm-rule);
+  border-radius: var(--mm-radius);
+}
+
+.mm-briefing .mm-lbl-strong {
+  margin-bottom: 10px;
+  letter-spacing: 0.22em;
+  color: var(--mm-clay);
+}
+
+.mm-briefing-headline {
+  font-family: var(--mm-font-display);
+  font-size: 22px;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  color: var(--mm-ink);
+  margin: 0 0 14px;
+  font-weight: 500;
+}
+
+.mm-briefing-body {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--mm-ink-soft, var(--mm-ink));
+  margin: 0 0 8px;
+}
+
+.mm-briefing-body:last-child {
+  margin-bottom: 0;
+}
+
 /* TL;DR — top-of-page canonical summary. Subsumed three earlier
- * surfaces (Synopsis tile + Summary editor + What-it-covered list). */
+ * surfaces (Synopsis tile + Summary editor + What-it-covered list).
+ * Suppressed when `briefing` is present — the briefing covers "what." */
 .mm-tldr {
   margin: 28px 0 18px;
   padding: 24px 28px;
