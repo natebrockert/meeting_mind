@@ -26,7 +26,6 @@ from __future__ import annotations
 
 import json
 import logging
-from collections import defaultdict
 
 from app.config import AppConfig
 from app.db.database import connect
@@ -36,23 +35,54 @@ _LOG = logging.getLogger(__name__)
 
 
 _LLM_IDENTITY_PROMPT = """\
-You are matching speaker labels in a meeting transcript to real human
-names mentioned in the conversation. Each speaker appears as
-"Speaker 1", "Speaker 2", etc. — these are diarization labels, not
-real names. Your job: identify which speaker corresponds to each
-name.
+You are solving a who-said-what attribution puzzle. The transcript
+labels speakers as "Speaker 1", "Speaker 2", etc. — these are
+diarization labels, not real names. Several real human names appear
+inside the dialogue (in direct address, story-context references,
+self-introductions, etc.). Your task is to deduce which diarization
+label corresponds to which real name, by reasoning across the WHOLE
+conversation like a logic puzzle.
 
-OUTPUT FORMAT: return JSON matching the schema you've been given.
-For each speaker you're confident about, emit an assignment with
-the speaker's diarization label, the matching name, a confidence
-score in [0, 1], and a brief justification quoting the transcript
-evidence. Skip any speaker you can't confidently identify — do NOT
-guess.
+REASONING PROCESS (do this internally — your output is structured):
+
+1. Scan for direct-address anchors ("Hey John, what do you think?").
+   The NEXT speaker who responds is usually John. Two consecutive
+   direct-address hits to the same name across different chunks
+   greatly increase confidence.
+
+2. Scan for self-reference exclusions. If Speaker X says a name in
+   their own utterance ("Alice is helping us" / "Alice just told
+   me"), Speaker X is NOT Alice — people rarely talk about
+   themselves in third person.
+
+3. Scan for self-introductions ("I'm Brent" / "this is Brent
+   speaking"). Strong direct binding.
+
+4. Scan for welcome / join events ("welcome Brent" / "thanks for
+   joining, Brent"). The NEXT NEW speaker (one who hadn't spoken
+   yet) is Brent.
+
+5. Cross-check: an assignment is only valid if it survives ALL of
+   1–4. If Speaker 3 was addressed as "Brent" but ALSO referred to
+   "Brent" in third person, drop the assignment — internal
+   contradiction.
+
+6. Use the owner name as a high prior — the dashboard owner is
+   almost always one of the speakers, often the one driving the
+   conversation or asking the most questions.
+
+OUTPUT FORMAT: return JSON matching the schema. For each speaker
+you're confident about, emit { speaker_id, name, confidence, brief
+justification quoting the transcript evidence }. Skip any speaker
+you can't confidently identify — do NOT guess.
 
 HARD RULES:
 
 1. **Names MUST come from the candidate pool or the owner name.**
    You are not allowed to invent a name that isn't in the inputs.
+   If a real name appears in the dialogue but ISN'T in `candidates`,
+   it means the regex resolver couldn't validate it — do NOT use
+   it.
 
 2. **A name can only be assigned to one speaker.** If two speakers
    plausibly fit a name, pick the better-supported one and skip the
@@ -61,30 +91,22 @@ HARD RULES:
 3. **A speaker can only be assigned one name.** Pick the strongest
    match per speaker.
 
-4. **Self-reference exclusion.** If Speaker X uses a name in their
-   own utterance ("Alice is helping us" said by Speaker 1), Speaker
-   X is NOT that name. People rarely refer to themselves in the
-   third person.
+4. **Self-reference exclusion is hard.** See reasoning step 2.
 
-5. **Return null when uncertain.** confidence < 0.5 means skip the
-   assignment entirely — emit fewer rows rather than guessing.
+5. **Return fewer rows when uncertain.** confidence < 0.5 means
+   skip the assignment — emit fewer rows rather than guessing.
 
 INPUTS:
 
-- `owner` — the dashboard owner's name. They almost always appear
-  in their own meeting; if a speaker's samples sound like the
-  owner's voice or are addressed-as the owner, weight that match.
+- `owner` — the dashboard owner's display name. High prior — they
+  uploaded the recording and are almost always present.
 
-- `candidates` — names already detected by the regex resolver. These
-  are the only valid name choices. If a real name appears in
-  transcript samples but ISN'T in this list, do NOT use it — it
-  means the regex resolver couldn't validate it.
+- `candidates` — names already detected by the regex resolver. The
+  only valid name choices (plus the owner).
 
-- `speakers` — for each diarization speaker, two or three of their
-  longest transcript segments. These show speaking style + content
-  and let you triangulate identity from address patterns ("Hey,
-  John" → John is the NEXT speaker who responds) and self-reference
-  exclusions.
+- `dialogue` — the chronological transcript with diarization labels
+  intact, in "Speaker N: utterance" form. May be truncated for
+  length on very long meetings — reason about the visible portion.
 """
 
 
@@ -251,11 +273,23 @@ def load_llm_speaker_identities(
 # ── internals ────────────────────────────────────────────────────────
 
 
+_MAX_DIALOGUE_CHARS = 15000
+
+
 def _build_inputs(config: AppConfig, meeting_id: int) -> dict | None:
-    """Assemble the inputs dict the LLM prompt expects: owner, the
-    candidate-name pool, and per-speaker transcript samples. Returns
-    None when the meeting has no transcript or no candidates — both
-    cases mean the LLM has nothing to work with.
+    """Assemble the inputs the LLM prompt expects: owner, the
+    candidate-name pool, and the chronological dialogue with
+    diarization labels intact. Returns None when the meeting has no
+    transcript or no candidates — both mean the LLM has nothing to
+    work with.
+
+    The dialogue is kept in temporal order (essential for cross-
+    attribution reasoning — direct address followed by response,
+    welcome events, etc.) and capped at ~15k chars. For longer
+    meetings we keep the first 10k chars (intros + early direct
+    addresses live here) and the last 5k chars (the close usually
+    contains landing references that disambiguate stragglers),
+    eliding the middle.
     """
     with connect(config.paths.database_path) as conn:
         seg_rows = conn.execute(
@@ -291,34 +325,58 @@ def _build_inputs(config: AppConfig, meeting_id: int) -> dict | None:
         # Skip rather than letting the LLM invent freely.
         return None
 
-    # Pick up to 3 of each speaker's longest segments. The LLM needs
-    # enough material to triangulate identity from style + content
-    # but not so much that the prompt balloons. Cap each sample at
-    # 300 chars so even a speaker with a 30-segment monologue
-    # contributes a bounded amount.
-    by_speaker: dict[str, list[dict]] = defaultdict(list)
-    for r in seg_rows:
-        sid = str(r["diarization_speaker_id"])
-        text = str(r["text"] or "").strip()
-        if not text:
-            continue
-        duration = max(1, int(r["end_ms"]) - int(r["start_ms"]))
-        by_speaker[sid].append(
-            {"id": int(r["id"]), "duration_ms": duration, "text": text}
-        )
-
-    speakers_payload: dict[str, list[str]] = {}
-    for sid, segs in by_speaker.items():
-        # Longest by duration, then truncate text. Up to 3 per speaker.
-        top = sorted(segs, key=lambda s: -s["duration_ms"])[:3]
-        speakers_payload[sid] = [s["text"][:300] for s in top]
+    dialogue = _build_dialogue(seg_rows)
+    if not dialogue:
+        return None
 
     owner_display = (config.owner.display_name or "").strip()
     return {
         "owner": owner_display,
         "candidates": sorted(candidates),
-        "speakers": speakers_payload,
+        "dialogue": dialogue,
     }
+
+
+def _build_dialogue(seg_rows) -> str:
+    """Render segments as 'Speaker N: text' lines in temporal order.
+
+    Caps total length at `_MAX_DIALOGUE_CHARS`. For oversize meetings,
+    keeps the first 10k chars and the last 5k chars with an explicit
+    ellipsis between — preserves the highest-signal portions for
+    cross-attribution reasoning while bounding token cost.
+    """
+    lines: list[str] = []
+    for r in seg_rows:
+        sid = str(r["diarization_speaker_id"])
+        text = str(r["text"] or "").strip()
+        if not text:
+            continue
+        lines.append(f"{sid}: {text}")
+    if not lines:
+        return ""
+    joined = "\n".join(lines)
+    if len(joined) <= _MAX_DIALOGUE_CHARS:
+        return joined
+    # Oversize: head + ellipsis + tail. Cut on a line boundary so we
+    # don't slice a sentence mid-word.
+    head_budget = 10_000
+    tail_budget = 5_000
+    head_end = joined.rfind("\n", 0, head_budget)
+    if head_end <= 0:
+        head_end = head_budget
+    tail_start = joined.rfind("\n", 0, len(joined) - tail_budget)
+    if tail_start <= 0:
+        tail_start = len(joined) - tail_budget
+    # Boundary guard: if head and tail meet or overlap (e.g. a meeting
+    # just slightly over the cap with few line breaks), inserting an
+    # ellipsis would either be a lie ("truncated" but no content was
+    # actually elided) or duplicate content. Fall back to a flat slice
+    # in those cases.
+    if tail_start <= head_end:
+        return joined[:_MAX_DIALOGUE_CHARS]
+    head = joined[:head_end]
+    tail = joined[tail_start:].lstrip("\n")
+    return f"{head}\n\n[... transcript truncated for length ...]\n\n{tail}"
 
 
 def _persist_llm_identities(
