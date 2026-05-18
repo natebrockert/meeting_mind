@@ -367,6 +367,13 @@ def _build_dialogue(seg_rows) -> str:
     tail_start = joined.rfind("\n", 0, len(joined) - tail_budget)
     if tail_start <= 0:
         tail_start = len(joined) - tail_budget
+    # Boundary guard: if head and tail meet or overlap (e.g. a meeting
+    # just slightly over the cap with few line breaks), inserting an
+    # ellipsis would either be a lie ("truncated" but no content was
+    # actually elided) or duplicate content. Fall back to a flat slice
+    # in those cases.
+    if tail_start <= head_end:
+        return joined[:_MAX_DIALOGUE_CHARS]
     head = joined[:head_end]
     tail = joined[tail_start:].lstrip("\n")
     return f"{head}\n\n[... transcript truncated for length ...]\n\n{tail}"

@@ -266,9 +266,9 @@ def test_embedded_vocative_after_you_know(tmp_path: Path) -> None:
 
 
 def test_oh_hey_brent_thanks_for_joining(tmp_path: Path) -> None:
-    """The real transcript at 24:05: 'Oh, hey, Brent, thanks for joining.'
-    The vocative-thank anchor must accept hey/oh prefixes before the
-    name, not just sentence-terminal punctuation.
+    """Vocative-thank with a hey/oh prefix: 'Oh, hey, Brent, thanks for joining.'
+    The anchor must accept hey/oh prefixes before the name, not just
+    sentence-terminal punctuation.
     """
     cfg = _cfg(tmp_path)
     _seed(

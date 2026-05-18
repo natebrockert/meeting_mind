@@ -141,6 +141,22 @@ def test_build_inputs_returns_none_without_segments(tmp_path: Path) -> None:
     assert _build_inputs(cfg, 1) is None
 
 
+def test_build_dialogue_handles_head_tail_boundary_overlap(tmp_path: Path) -> None:
+    """Audit M-2: when head and tail would meet or overlap (oversize
+    transcript with few line breaks), the function must NOT emit a
+    bogus "truncated" marker. It falls back to a flat 15k slice so the
+    LLM doesn't think content was elided when it wasn't.
+    """
+    from app.services.repair.llm_identity import _build_dialogue
+
+    # ~15.1k chars across just 4 lines: head_end and tail_start collide.
+    big = "y" * 3700  # 4 × 3700 ≈ 14.8k, plus 4 prefixes ~ 15.05k total
+    rows = [{"diarization_speaker_id": "Speaker 1", "text": big} for _ in range(4)]
+    out = _build_dialogue(rows)
+    assert len(out) <= 15_000
+    assert "transcript truncated" not in out
+
+
 def test_build_inputs_caps_dialogue_at_15k_chars(tmp_path: Path) -> None:
     """Long transcripts are truncated to ~15k chars. The head + tail
     are preserved (intros + landing) with an ellipsis marker between.
